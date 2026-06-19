@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scotland Trip · June 2026</title>
+<title>Scotland Trip · Calendar View</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -13,759 +13,900 @@
     --ink: #1a1a18;
     --ink-mid: #4a4a46;
     --ink-soft: #8a8a84;
-    --cream: #f7f5f0;
-    --cream-dark: #ede9e2;
+    --paper: #ffffff;
+    --bg: #f6f5f2;
+    --grid-line: #e3e1da;
+    --grid-line-strong: #c9c6bc;
+
     --heather: #6b5b8c;
-    --heather-light: #ede9f7;
-    --heather-mid: #9b8bbf;
+    --heather-bg: #f1eef9;
+    --heather-bd: #d6cdec;
+
     --loch: #2d6a7f;
-    --loch-light: #e3f0f5;
+    --loch-bg: #e9f3f6;
+    --loch-bd: #bcdee6;
+
     --moss: #3d6b40;
-    --moss-light: #e8f2e8;
-    --amber: #b86a1a;
-    --amber-light: #fdf0e3;
-    --puffin: #c04a2a;
-    --puffin-light: #fceae5;
-    --rule: #d8d4cc;
+    --moss-bg: #edf4ed;
+    --moss-bd: #c3dcc4;
+
+    --amber: #a35d12;
+    --amber-bg: #fbf1e3;
+    --amber-bd: #ecd2a4;
+
+    --puffin: #b1431f;
+    --puffin-bg: #fbeae3;
+    --puffin-bd: #f0c2a8;
+
+    --flight: #1a1a18;
+    --flight-bg: #ececea;
+
     --serif: 'Playfair Display', Georgia, serif;
     --sans: 'Inter', system-ui, sans-serif;
   }
 
   body {
     font-family: var(--sans);
-    background: var(--cream);
+    background: var(--bg);
     color: var(--ink);
-    line-height: 1.6;
-    font-size: 15px;
+    font-size: 14px;
   }
 
   /* ── HEADER ── */
   .site-header {
     background: var(--ink);
     color: white;
-    padding: 48px 32px 40px;
-    position: relative;
-    overflow: hidden;
-  }
-  .site-header::before {
-    content: 'SCOTLAND';
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--serif);
-    font-size: 120px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.04);
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-    pointer-events: none;
-  }
-  .header-eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 10px;
-    font-weight: 500;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
   }
   .header-title {
     font-family: var(--serif);
-    font-size: clamp(32px, 6vw, 52px);
-    font-weight: 600;
-    line-height: 1.1;
-    margin-bottom: 14px;
-    color: white;
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .header-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 3px;
+    letter-spacing: 0.02em;
   }
   .header-meta {
     display: flex;
-    flex-wrap: wrap;
     gap: 8px;
-    margin-top: 18px;
+    flex-wrap: wrap;
   }
   .header-pill {
     background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    padding: 5px 14px;
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 5px 13px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 11px;
     color: rgba(255,255,255,0.8);
     font-weight: 500;
+    white-space: nowrap;
   }
 
-  /* ── LAYOUT ── */
-  .container {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  /* ── BOOKING CALLOUT ── */
   .book-now-bar {
     background: var(--puffin);
     color: white;
-    padding: 14px 24px;
+    padding: 10px 24px;
     text-align: center;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 500;
-    letter-spacing: 0.01em;
   }
-  .book-now-bar a { color: white; font-weight: 600; }
+  .book-now-bar a { color: white; font-weight: 700; text-decoration: underline; }
 
-  /* ── SECTION TITLE ── */
-  .section-intro {
-    padding: 40px 0 8px;
-    border-bottom: 2px solid var(--ink);
-    margin-bottom: 0;
-  }
-  .section-intro h2 {
-    font-family: var(--serif);
-    font-size: 22px;
-    font-weight: 600;
+  /* ── CALENDAR GRID (desktop = week view) ── */
+  .cal-wrap {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+    overflow-x: auto;
   }
 
-  /* ── DAY CARDS ── */
-  .day {
-    border-bottom: 1px solid var(--rule);
-    padding: 32px 0;
-  }
-  .day:last-child { border-bottom: none; }
-
-  .day-header {
+  .cal-grid {
     display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 0 20px;
-    margin-bottom: 20px;
-    align-items: start;
-  }
-  .day-num {
-    font-family: var(--serif);
-    font-size: 38px;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--rule);
-    text-align: right;
-    padding-top: 4px;
-  }
-  .day-label {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    font-weight: 500;
-    margin-bottom: 4px;
-  }
-  .day-title {
-    font-family: var(--serif);
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 2px;
-  }
-  .day-sub {
-    font-size: 13px;
-    color: var(--ink-mid);
+    grid-template-columns: repeat(9, minmax(165px, 1fr));
+    gap: 1px;
+    background: var(--grid-line-strong);
+    border: 1px solid var(--grid-line-strong);
+    min-width: 1500px;
   }
 
-  /* color accent bar on left of day-num col */
-  .day-header-inner {
-    border-left: 3px solid var(--rule);
-    padding-left: 16px;
-  }
-  .day.theme-heather .day-header-inner { border-color: var(--heather); }
-  .day.theme-loch    .day-header-inner { border-color: var(--loch); }
-  .day.theme-moss    .day-header-inner { border-color: var(--moss); }
-  .day.theme-amber   .day-header-inner { border-color: var(--amber); }
-  .day.theme-puffin  .day-header-inner { border-color: var(--puffin); }
-
-  /* ── SECTIONS WITHIN A DAY ── */
-  .blocks { display: flex; flex-direction: column; gap: 14px; margin-left: 76px; }
-
-  .block {
-    border-radius: 10px;
-    padding: 16px 18px;
-  }
-  .block-heather { background: var(--heather-light); }
-  .block-loch    { background: var(--loch-light); }
-  .block-moss    { background: var(--moss-light); }
-  .block-amber   { background: var(--amber-light); }
-  .block-puffin  { background: var(--puffin-light); }
-  .block-neutral { background: var(--cream-dark); }
-
-  .block-title {
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .block-title.heather { color: var(--heather); }
-  .block-title.loch    { color: var(--loch); }
-  .block-title.moss    { color: var(--moss); }
-  .block-title.amber   { color: var(--amber); }
-  .block-title.puffin  { color: var(--puffin); }
-
-  .items-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .items-list li {
-    display: flex;
-    gap: 10px;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  .items-list li::before {
-    content: '→';
-    flex-shrink: 0;
-    color: var(--ink-soft);
-    font-size: 12px;
-    margin-top: 2px;
-  }
-  .item-name { font-weight: 500; }
-  .item-note { font-size: 13px; color: var(--ink-mid); margin-top: 2px; }
-
-  /* cost badge */
-  .cost {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-left: 6px;
-    background: rgba(0,0,0,0.07);
-    color: var(--ink);
-    vertical-align: middle;
-    white-space: nowrap;
-  }
-  .cost.free { background: #d4edda; color: #1a5c2a; }
-  .cost.book { background: #fff3cd; color: #7a4800; }
-
-  /* links */
-  a { color: var(--loch); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  a.ext::after { content: ' ↗'; font-size: 10px; opacity: 0.6; }
-
-  /* food chips */
-  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
-  .chip {
-    font-size: 12px;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-weight: 500;
-    border: 1px solid;
-  }
-  .chip-heather { background: var(--heather-light); color: var(--heather); border-color: var(--heather-mid); }
-  .chip-loch    { background: var(--loch-light);    color: var(--loch);    border-color: #7ab4c8; }
-  .chip-moss    { background: var(--moss-light);    color: var(--moss);    border-color: #8ab88d; }
-  .chip-neutral { background: var(--cream-dark);    color: var(--ink-mid); border-color: var(--rule); }
-
-  /* tip box */
-  .tip {
-    font-size: 13px;
-    color: var(--ink-mid);
-    padding: 12px 14px;
-    border-left: 3px solid var(--rule);
-    background: white;
-    border-radius: 0 6px 6px 0;
-    line-height: 1.6;
-  }
-  .tip strong { color: var(--ink); }
-
-  /* flight bar */
-  .flight-bar {
+  .day-col-header {
     background: var(--ink);
     color: white;
-    border-radius: 10px;
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
+    padding: 12px 14px;
+    position: sticky;
+    top: 0;
   }
-  .flight-bar .plane { font-size: 18px; }
-  .flight-bar .route { flex: 1; display: flex; align-items: center; gap: 10px; }
-  .flight-bar .city { font-weight: 600; }
-  .flight-bar .line { flex: 1; height: 1px; background: rgba(255,255,255,0.25); position: relative; }
-  .flight-bar .line::after { content: '✈'; position: absolute; top: -9px; left: 50%; transform: translateX(-50%); font-size: 13px; background: var(--ink); padding: 0 4px; }
-  .flight-bar .time { font-size: 12px; color: rgba(255,255,255,0.6); }
+  .day-col-header .dow {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+  }
+  .day-col-header .dnum {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 2px;
+  }
+  .day-col-header .dtag {
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .day-col-header.theme-heather { background: var(--heather); }
+  .day-col-header.theme-loch    { background: var(--loch); }
+  .day-col-header.theme-moss    { background: var(--moss); }
+  .day-col-header.theme-amber   { background: var(--amber); }
+  .day-col-header.theme-puffin  { background: var(--puffin); }
 
-  /* concert banner */
-  .concert {
+  .day-col-body {
+    background: var(--paper);
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 560px;
+  }
+
+  /* Event blocks */
+  .ev {
+    border-radius: 7px;
+    padding: 9px 10px;
+    border-left: 3px solid;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .ev-time {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 2px;
+  }
+  .ev-title {
+    font-weight: 600;
+    font-size: 12.5px;
+    margin-bottom: 2px;
+  }
+  .ev-note {
+    font-size: 11px;
+    opacity: 0.8;
+    line-height: 1.4;
+  }
+  .ev-link {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+  .ev-cost {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 4px;
+    margin-right: 4px;
+  }
+
+  .ev-flight    { background: var(--flight-bg); border-color: var(--flight); color: var(--ink); }
+  .ev-heather   { background: var(--heather-bg); border-color: var(--heather); color: #3d3157; }
+  .ev-loch      { background: var(--loch-bg); border-color: var(--loch); color: #1c4854; }
+  .ev-moss      { background: var(--moss-bg); border-color: var(--moss); color: #25401f; }
+  .ev-amber     { background: var(--amber-bg); border-color: var(--amber); color: #6e4108; }
+  .ev-puffin    { background: var(--puffin-bg); border-color: var(--puffin); color: #7a2d14; }
+  .ev-neutral   { background: #f1efe9; border-color: var(--grid-line-strong); color: var(--ink-mid); }
+
+  .ev a { color: inherit; text-decoration: underline; }
+  .cost-free { background: #d7ecd5; color: #1f5c22; }
+  .cost-book { background: #fbe6b8; color: #6e4500; }
+
+  .ev.concert {
     background: var(--heather);
     color: white;
-    border-radius: 10px;
-    padding: 14px 18px;
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    border-color: #4a3d66;
+  }
+  .ev.concert .ev-time { color: rgba(255,255,255,0.8); }
+
+  /* drag & drop */
+  .ev:not([data-locked]) { cursor: grab; user-select: none; }
+  .ev:not([data-locked]):active { cursor: grabbing; }
+  .ev[data-locked] { cursor: default; }
+  .ev[data-locked]::after {
+    content: '🔒';
+    float: right;
+    font-size: 10px;
+    opacity: 0.45;
+  }
+  .ev.sortable-ghost { opacity: 0.35; }
+  .ev.sortable-chosen { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+  .day-col-body.sortable-drag-active {
+    background: #faf9f6;
+    outline: 2px dashed var(--loch-bd);
+    outline-offset: -4px;
   }
 
-  /* costs summary table */
+  .cal-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 1500px;
+    margin: 12px auto 0;
+    padding: 0 24px;
+    font-size: 11.5px;
+    color: var(--ink-mid);
+  }
+  .cal-toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cal-btn {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--grid-line-strong);
+    background: white;
+    color: var(--ink-mid);
+    cursor: pointer;
+  }
+  .cal-btn:hover { background: var(--bg); color: var(--ink); }
+  .cal-btn-primary {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+  .cal-btn-primary:hover { background: #333; }
+  .save-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--ink);
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .save-toast.show { opacity: 1; transform: translateY(0); }
+
+  /* legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 16px 24px 0;
+    max-width: 1500px;
+    margin: 0 auto;
+    font-size: 11px;
+    color: var(--ink-mid);
+    align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  /* costs table below */
+  .section-title {
+    max-width: 1500px;
+    margin: 40px auto 0;
+    padding: 0 24px;
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 10px;
+  }
+  .costs-wrap {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px 24px 50px;
+  }
   .costs-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
-    margin-top: 8px;
+    font-size: 13px;
+    background: white;
   }
   .costs-table th {
     text-align: left;
-    font-size: 11px;
+    font-size: 10.5px;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.07em;
     color: var(--ink-soft);
-    padding: 8px 12px;
+    padding: 10px 12px;
     border-bottom: 2px solid var(--ink);
-    font-weight: 600;
+    font-weight: 700;
   }
   .costs-table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--rule);
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--grid-line);
     vertical-align: top;
   }
-  .costs-table tr:last-child td { border-bottom: none; }
-  .costs-table .price { font-weight: 600; white-space: nowrap; }
-  .costs-table .book-link { font-size: 12px; }
-  .costs-table tr:hover td { background: var(--cream-dark); }
+  .costs-table tr:hover td { background: #faf9f6; }
+  .costs-table .price { font-weight: 700; white-space: nowrap; }
+  .costs-table a { color: var(--loch); font-weight: 600; }
 
-  /* footer */
   footer {
     background: var(--ink);
     color: rgba(255,255,255,0.45);
     text-align: center;
-    padding: 24px;
-    font-size: 12px;
-    margin-top: 40px;
+    padding: 20px;
+    font-size: 11.5px;
   }
-  footer strong { color: rgba(255,255,255,0.75); }
 
-  @media (max-width: 540px) {
-    .day-header { grid-template-columns: 1fr; }
-    .day-num { display: none; }
-    .blocks { margin-left: 0; }
-    .site-header { padding: 32px 20px 28px; }
-    .container { padding: 0 16px; }
-  }
-  @media print {
-    .book-now-bar { display: none; }
-    body { background: white; font-size: 13px; }
-    .block { break-inside: avoid; }
-    .day { break-inside: avoid; }
-    a::after { display: none; }
+  /* ── MOBILE: stack as agenda list instead of grid ── */
+  @media (max-width: 900px) {
+    .cal-wrap { overflow-x: visible; padding: 16px 14px 40px; }
+    .cal-grid {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      gap: 14px;
+      background: none;
+      border: none;
+    }
+    .day-col { display: flex; flex-direction: column; border: 1px solid var(--grid-line-strong); border-radius: 10px; overflow: hidden; }
+    .day-col-header { position: static; display: flex; align-items: baseline; gap: 10px; }
+    .day-col-header .dnum { font-size: 18px; }
+    .day-col-body { min-height: 0; padding: 12px; }
+    .site-header { padding: 20px; flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
 <body>
 
 <div class="site-header">
-  <div class="container">
-    <div class="header-eyebrow">Trip Itinerary · June 2026</div>
-    <h1 class="header-title">Scotland —<br>Glasgow & Beyond</h1>
-    <div class="header-meta">
-      <span class="header-pill">✈ YYZ → GLA</span>
-      <span class="header-pill">Jun 21–29</span>
-      <span class="header-pill">Glasgow · Edinburgh · Highlands · Puffins</span>
-      <span class="header-pill">🎶 Concert Jun 26</span>
-    </div>
+  <div>
+    <div class="header-title">Scotland — Glasgow & Beyond</div>
+    <div class="header-sub">Trip itinerary · June 21–29, 2026</div>
+  </div>
+  <div class="header-meta">
+    <span class="header-pill">✈ YYZ ⇄ GLA</span>
+    <span class="header-pill">🎶 Concert Jun 26</span>
+    <span class="header-pill">🐦 Puffins Jun 24</span>
   </div>
 </div>
 
 <div class="book-now-bar">
-  ⚠ Book in advance: <strong>Edinburgh Castle</strong> (sells out in summer) · <strong>Turus Mara puffin tour</strong> (very limited spots) · <strong>Rabbie's Highlands tour</strong>
+  ⚠ Book ahead: <a href="https://www.turusmara.com">Turus Mara puffin tour</a> · <a href="https://www.rabbies.com/en-us/tour/loch-ness-glencoe-the-highlands-day-tour-from-glasgow">Rabbie's Highlands tour</a> · <a href="https://www.edinburghcastle.scot/tickets">Edinburgh Castle</a>
 </div>
 
-<div class="container">
-
-  <!-- ── FLIGHTS ── -->
-  <div class="section-intro"><h2>Getting There & Home</h2></div>
-
-  <div class="day">
-    <div class="day-header">
-      <div class="day-num">✈</div>
-      <div class="day-header-inner">
-        <div class="day-label">Saturday Jun 21 → Sunday Jun 22</div>
-        <div class="day-title">Depart Toronto</div>
-        <div class="day-sub">YYZ 10:05 pm → Glasgow Airport (GLA), arrive morning Jun 22</div>
-      </div>
-    </div>
-    <div class="blocks">
-      <div class="block block-neutral">
-        <ul class="items-list">
-          <li><div><span class="item-name">Glasgow Airport → City</span><div class="item-note">747 Airlink bus to Buchanan Bus Station (~30 min, very cheap). Then walk to Glasgow Queen Street station for the Edinburgh train.</div></div></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="day">
-    <div class="day-header">
-      <div class="day-num">✈</div>
-      <div class="day-header-inner">
-        <div class="day-label">Sunday Jun 29</div>
-        <div class="day-title">Fly Home</div>
-        <div class="day-sub">Glasgow Airport (GLA) 11:00 am → Toronto YYZ</div>
-      </div>
-    </div>
-    <div class="blocks">
-      <div class="block block-neutral">
-        <div class="tip"><strong>Leave your accommodation by 8:00–8:30 am.</strong> Allow 45 min to reach Glasgow Airport from the city centre. International check-in closes well before departure.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── MAIN ITINERARY ── -->
-  <div class="section-intro"><h2>Day by Day</h2></div>
-
-  <!-- DAY 1 -->
-  <div class="day theme-heather">
-    <div class="day-header">
-      <div class="day-num">1</div>
-      <div class="day-header-inner">
-        <div class="day-label">Sunday · June 22</div>
-        <div class="day-title">Arrive → Edinburgh</div>
-        <div class="day-sub">Power through the jet lag — straight to the capital</div>
-      </div>
-    </div>
-    <div class="blocks">
-
-      <div class="block block-loch">
-        <div class="block-title loch">🚂 Glasgow → Edinburgh by train</div>
-        <ul class="items-list">
-          <li><div><span class="item-name">Glasgow Queen Street → Edinburgh Waverley</span><span class="cost book">~45–50 min · ~£15–20 pp</span><div class="item-note">Trains every 30 min. Buy on <a href="https://www.scotrail.co.uk" class="ext">ScotRail.co.uk</a> or at the station. No booking required — just go!</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-heather">
-        <div class="block-title heather">🏰 Edinburgh Old Town — slow wander</div>
-        <ul class="items-list">
-          <li><div><span class="item-name"><a href="https://maps.app.goo.gl/RoyalMile" class="ext">The Royal Mile</a></span><span class="cost free">Free</span><div class="item-note">Walk from the Castle Esplanade down to Holyrood Palace. Pubs, whisky shops, and closes (little alleyways) every 30 metres.</div></div></li>
-          <li><div><span class="item-name"><a href="https://maps.app.goo.gl/VictoriaSt" class="ext">Victoria Street</a></span><span class="cost free">Free</span><div class="item-note">The curved, colourful street said to inspire Diagon Alley. Short but magical — pop in for a wander.</div></div></li>
-          <li><div><span class="item-name"><a href="https://maps.app.goo.gl/Grassmarket" class="ext">Grassmarket</a></span><span class="cost free">Free</span><div class="item-note">Medieval market square — great spot for a pint and dinner. Relaxed and very atmospheric.</div></div></li>
-          <li><div><span class="item-name"><a href="https://www.nms.ac.uk" class="ext">National Museum of Scotland</a></span><span class="cost free">Free</span><div class="item-note">Huge, fascinating, great for resting tired legs. On Chambers Street.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-neutral">
-        <div class="tip"><strong>Save for a return visit:</strong> Edinburgh Castle, Arthur's Seat, and Princes Street Gardens are all better done when you're rested. Last trains back to Glasgow run until ~11:45 pm.</div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- DAY 2 -->
-  <div class="day theme-moss">
-    <div class="day-header">
-      <div class="day-num">2</div>
-      <div class="day-header-inner">
-        <div class="day-label">Monday · June 23</div>
-        <div class="day-title">Glasgow — West End & Sights</div>
-        <div class="day-sub">Necropolis · Kelvingrove · University · Botanics</div>
-      </div>
-    </div>
-    <div class="blocks">
-
-      <div class="block block-moss">
-        <div class="block-title moss">🏛 Sights</div>
-        <ul class="items-list">
-          <li><div><span class="item-name"><a href="https://www.glasgownecropolis.org" class="ext">Glasgow Necropolis</a></span><span class="cost free">Free</span><div class="item-note">Highly recommended. Victorian hillside cemetery with sweeping city views. Right next to Glasgow Cathedral — visit both. Eerie and beautiful.</div></div></li>
-          <li><div><span class="item-name"><a href="https://www.glasgowlife.org.uk/museums/venues/kelvingrove-art-gallery-and-museum" class="ext">Kelvingrove Art Gallery & Museum</a></span><span class="cost free">Free</span><div class="item-note">World-class collection in a stunning Spanish Baroque building. Dalí's Christ of Saint John, arms, armour, and much more.</div></div></li>
-          <li><div><span class="item-name"><a href="https://www.gla.ac.uk" class="ext">University of Glasgow</a></span><span class="cost free">Free</span><div class="item-note">Stunning Gothic campus in the West End — free to walk through. Great for photos.</div></div></li>
-          <li><div><span class="item-name"><a href="https://www.glasgowbotanicgardens.com" class="ext">Botanic Gardens</a></span><span class="cost free">Free</span><div class="item-note">Lovely park along the River Kelvin. The Kibble Palace glasshouse is worth a look inside.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-neutral">
-        <div class="block-title">☕ West End Food & Coffee</div>
-        <div class="chips">
-          <span class="chip chip-moss">Paper Cup ☕</span>
-          <span class="chip chip-moss">Naked Soup 🥣</span>
-          <span class="chip chip-moss">Focaccia 🍞</span>
-        </div>
-        <div style="margin-top:10px">
-          <div class="tip">All in the West End — easy to hit these between Kelvingrove and the Botanics.</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- DAY 3 -->
-  <div class="day theme-puffin">
-    <div class="day-header">
-      <div class="day-num">3</div>
-      <div class="day-header-inner">
-        <div class="day-label">Tuesday · June 24</div>
-        <div class="day-title">Puffins! Isle of Lunga</div>
-        <div class="day-sub">Full day · Glasgow → Oban → Mull → Treshnish Isles</div>
-      </div>
-    </div>
-    <div class="blocks">
-
-      <div class="block block-puffin">
-        <div class="block-title puffin">🐦 Puffin Day — Book This First!</div>
-        <ul class="items-list">
-          <li><div><span class="item-name"><a href="https://www.turusmara.com/trips/treshnish-isles-and-staffa-wildlife-trip/" class="ext">Turus Mara — Treshnish Isles & Staffa Wildlife Tour</a></span><span class="cost book">~£65–75 pp · Book direct</span><div class="item-note">The gold standard. Family-run, departing Ulva Ferry on Mull. 2+ hours ashore on Lunga with puffins literally at your feet. Also visits Fingal's Cave on Staffa. Runs April–July — June is peak breeding season, the best time to go.</div></div></li>
-          <li><div><span class="item-name"><a href="https://staffatours.com/tours/staffa-and-treshnish-isles-wildlife-tour/" class="ext">Staffa Tours</a></span><span class="cost book">Alternative option</span><div class="item-note">Departs from Tobermory on Mull. Good option if Turus Mara is full.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-loch">
-        <div class="block-title loch">🚂 Getting There — Glasgow to Oban</div>
-        <ul class="items-list">
-          <li><div><span class="item-name"><a href="https://www.scotrail.co.uk" class="ext">Train: Glasgow Queen Street → Oban</a></span><span class="cost book">~2.5 hrs · ~£25–35 pp return</span><div class="item-note">Depart ~7:30 am to make the morning boat. The Oban line is one of Scotland's great scenic train journeys — go early to get a window seat.</div></div></li>
-          <li><div><span class="item-name">Oban → Mull Ferry (CalMac) + Minibus to Ulva Ferry</span><span class="cost book">~£10 pp + minibus</span><div class="item-note">Turus Mara coordinates transfers from Oban — confirm when booking. Return to Glasgow by ~7 pm.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-neutral">
-        <div class="tip"><strong>Weather note:</strong> Boat tours are weather-dependent and can be cancelled last-minute. Check the forecast the day before. Dress in warm layers even in June — it feels like October on the water.</div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- DAY 4 -->
-  <div class="day theme-moss">
-    <div class="day-header">
-      <div class="day-num">4</div>
-      <div class="day-header-inner">
-        <div class="day-label">Wednesday · June 25</div>
-        <div class="day-title">The Highlands</div>
-        <div class="day-sub">Glencoe · Loch Lomond · Rannoch Moor · Ben Nevis</div>
-      </div>
-    </div>
-    <div class="blocks">
-
-      <div class="block block-moss">
-        <div class="block-title moss">🏔 Guided Day Tour from Glasgow</div>
-        <ul class="items-list">
-          <li><div><span class="item-name"><a href="https://www.rabbies.com/en-us/tour/loch-ness-glencoe-the-highlands-day-tour-from-glasgow" class="ext">Rabbie's — Loch Ness, Glencoe & the Highlands (from Glasgow)</a></span><span class="cost book">From ~£75–85 pp · Book at rabbies.com</span><div class="item-note">Departs Buchanan Bus Station ~8:30 am, returns ~8:30 pm. Small minibus, max 16 people. Expert storyteller guide. Covers Loch Lomond, Glencoe, Rannoch Moor, Fort Augustus, Loch Ness, and Pitlochry.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-neutral">
-        <div class="block-title">🗺 What You'll See</div>
-        <ul class="items-list">
-          <li><div><span class="item-name">Loch Lomond & Luss Village</span><div class="item-note">Picturesque loch-side village, first stop of the day.</div></div></li>
-          <li><div><span class="item-name">Glencoe Valley</span><div class="item-note">Dramatic and haunting. Site of the 1692 massacre. Also: Bond's Skyfall & Harry Potter filming location.</div></div></li>
-          <li><div><span class="item-name">Rannoch Moor</span><div class="item-note">One of Europe's last great wildernesses — vast, boggy, and extraordinary.</div></div></li>
-          <li><div><span class="item-name">Fort William & Ben Nevis</span><div class="item-note">Charming Highland town at the base of the UK's highest peak. Lunch stop.</div></div></li>
-          <li><div><span class="item-name">Loch Ness & Pitlochry</span><div class="item-note">Optional Loch Ness boat cruise (~£15 extra). Pitlochry is a lovely final Highland stop.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-neutral">
-        <div class="tip"><strong>Highland cows:</strong> Many Rabbie's guides make a surprise stop for Highland cows — it's a highlight of the tour! Alternatively, <a href="https://www.glasgowlife.org.uk/parks/pollock-country-park" class="ext">Pollok Park</a> in the Glasgow Southside reliably has them and is only 20 min from the city centre.</div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- DAY 5 -->
-  <div class="day theme-heather">
-    <div class="day-header">
-      <div class="day-num">5</div>
-      <div class="day-header-inner">
-        <div class="day-label">Thursday · June 26</div>
-        <div class="day-title">Concert Day 🎶</div>
-        <div class="day-sub">Southside & Pollok Park · Evening concert in Glasgow</div>
-      </div>
-    </div>
-    <div class="blocks">
-
-      <div class="concert">🎶 Keep the day relaxed — big night ahead!</div>
-
-      <div class="block block-heather">
-        <div class="block-title heather">🌳 Southside Glasgow</div>
-        <ul class="items-list">
-          <li><div><span class="item-name"><a href="https://www.glasgowlife.org.uk/parks/pollock-country-park" class="ext">Pollok Country Park</a></span><span class="cost free">Free</span><div class="item-note">Glasgow's best park. Highland cows, Pollok House (free to enter), and the world-class Burrell Collection art museum — all free.</div></div></li>
-          <li><div><span class="item-name"><a href="https://www.theburrell.org" class="ext">The Burrell Collection</a></span><span class="cost free">Free</span><div class="item-note">Stunning art collection in a purpose-built museum inside Pollok Park. One of Glasgow's best kept secrets.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-neutral">
-        <div class="block-title">🍽 Pre-Concert Dinner Options</div>
-        <div style="margin-bottom:10px"><strong style="font-size:12px;color:var(--ink-soft);letter-spacing:.06em">SOUTHSIDE</strong></div>
-        <div class="chips" style="margin-bottom:14px">
-          <span class="chip chip-heather">Zennor 🍽️</span>
-          <span class="chip chip-heather">God Shot ☕</span>
-          <span class="chip chip-heather">Sears Pizza 🍕</span>
-          <span class="chip chip-heather">Bar Vini 🍷</span>
-        </div>
-        <div style="margin-bottom:8px"><strong style="font-size:12px;color:var(--ink-soft);letter-spacing:.06em">CITY CENTRE (near concert venues)</strong></div>
-        <div class="chips">
-          <span class="chip chip-loch">Dishoom 🍛</span>
-          <span class="chip chip-loch">Margo 🍽️</span>
-          <span class="chip chip-loch">Outlier ☕</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- DAY 6 -->
-  <div class="day theme-loch">
-    <div class="day-header">
-      <div class="day-num">6</div>
-      <div class="day-header-inner">
-        <div class="day-label">Friday · June 27</div>
-        <div class="day-title">Glasgow Explore</div>
-        <div class="day-sub">Merchant City · Riverside Museum · Cathedral Quarter</div>
-      </div>
-    </div>
-    <div class="blocks">
-
-      <div class="block block-loch">
-        <div class="block-title loch">🏙 City Sights</div>
-        <ul class="items-list">
-          <li><div><span class="item-name"><a href="https://maps.app.goo.gl/MerchantCity" class="ext">Merchant City</a></span><span class="cost free">Free</span><div class="item-note">Glasgow's fashionable cultural quarter. Great restaurants, bars, and street art. Built on the wealth of 18th-century tobacco merchants.</div></div></li>
-          <li><div><span class="item-name"><a href="https://www.glasgowcathedral.org.uk" class="ext">Glasgow Cathedral</a></span><span class="cost free">Free</span><div class="item-note">Magnificent medieval cathedral, one of Scotland's finest. Right next to the Necropolis if you want a two-for-one.</div></div></li>
-          <li><div><span class="item-name"><a href="https://www.glasgowlife.org.uk/museums/venues/riverside-museum" class="ext">Riverside Museum</a></span><span class="cost free">Free</span><div class="item-note">Award-winning transport museum on the Clyde, designed by Zaha Hadid. Spectacular building, brilliant collection.</div></div></li>
-          <li><div><span class="item-name"><a href="https://maps.app.goo.gl/BuchananSt" class="ext">Buchanan Street & Princes Square</a></span><span class="cost free">Free</span><div class="item-note">Glasgow's main shopping street. Princes Square is a stunning Victorian shopping centre hidden inside an ornate arcade.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-neutral">
-        <div class="block-title">🍽 Evening Dinner</div>
-        <div class="chips">
-          <span class="chip chip-loch">Margo</span>
-          <span class="chip chip-loch">Bar Vini</span>
-          <span class="chip chip-loch">Dishoom</span>
-        </div>
-        <div style="margin-top:10px">
-          <div class="tip">Great evening for a proper sit-down dinner at one of the recommended spots.</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- DAY 7 -->
-  <div class="day theme-heather">
-    <div class="day-header">
-      <div class="day-num">7</div>
-      <div class="day-header-inner">
-        <div class="day-label">Saturday · June 28</div>
-        <div class="day-title">Flex Day / Edinburgh Return</div>
-        <div class="day-sub">Last sights · optional Edinburgh Castle · early packing</div>
-      </div>
-    </div>
-    <div class="blocks">
-
-      <div class="block block-heather">
-        <div class="block-title heather">🏰 Option A — Edinburgh Return</div>
-        <ul class="items-list">
-          <li><div><span class="item-name"><a href="https://www.edinburghcastle.scot" class="ext">Edinburgh Castle</a></span><span class="cost book">£19.50 adults online · Book at edinburghcastle.scot</span><div class="item-note">Now you're rested! The castle is spectacular — home of the Honours of Scotland (Crown Jewels). Allow 2+ hours. <strong>Note: The Stone of Destiny has permanently moved to Perth Museum.</strong> Book online — sells out weeks ahead in summer.</div></div></li>
-          <li><div><span class="item-name"><a href="https://maps.app.goo.gl/ArthursSeat" class="ext">Arthur's Seat</a></span><span class="cost free">Free</span><div class="item-note">The extinct volcano behind Holyrood Palace. A 1-hour hike with panoramic views over Edinburgh and the Firth of Forth. Much better when rested!</div></div></li>
-          <li><div><span class="item-name"><a href="https://maps.app.goo.gl/NewTown" class="ext">Edinburgh New Town</a></span><span class="cost free">Free</span><div class="item-note">Georgian grid streets, Princes Street Gardens, the Scott Monument. A completely different character to the Old Town.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-neutral">
-        <div class="block-title">🌿 Option B — Slow Glasgow Morning</div>
-        <ul class="items-list">
-          <li><div><span class="item-name">Slow breakfast, West End wander</span><div class="item-note">Paper Cup or God Shot for coffee, revisit anything you loved, pack bags.</div></div></li>
-          <li><div><span class="item-name"><a href="https://www.scotrail.co.uk" class="ext">Train to Balloch (Loch Lomond)</a></span><span class="cost book">~45 min · £10 pp</span><div class="item-note">A peaceful final afternoon at Scotland's most famous loch before your early morning tomorrow.</div></div></li>
-        </ul>
-      </div>
-
-      <div class="block block-neutral">
-        <div class="tip"><strong>Tonight:</strong> Final dinner out — make it a good one. Set an alarm. Flight is at 11 am, leave hotel by 8:30 am.</div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ── COSTS TABLE ── -->
-  <div class="section-intro"><h2>Bookings & Costs at a Glance</h2></div>
-  <div style="padding: 28px 0">
-    <table class="costs-table">
-      <thead>
-        <tr>
-          <th>What</th>
-          <th>When</th>
-          <th>Cost (per person)</th>
-          <th>Book At</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Turus Mara Puffin Tour</strong><br><span style="font-size:12px;color:var(--ink-soft)">Treshnish Isles & Staffa · All day</span></td>
-          <td>Jun 24</td>
-          <td class="price">~£65–75</td>
-          <td class="book-link"><a href="https://www.turusmara.com" class="ext">turusmara.com</a><br><span style="color:var(--puffin);font-weight:600;font-size:11px">⚠ Book ASAP</span></td>
-        </tr>
-        <tr>
-          <td><strong>Rabbie's Highlands Tour</strong><br><span style="font-size:12px;color:var(--ink-soft)">Glencoe, Loch Ness, & Highlands · Full day</span></td>
-          <td>Jun 25</td>
-          <td class="price">~£75–85</td>
-          <td class="book-link"><a href="https://www.rabbies.com/en-us/tour/loch-ness-glencoe-the-highlands-day-tour-from-glasgow" class="ext">rabbies.com</a></td>
-        </tr>
-        <tr>
-          <td><strong>Edinburgh Castle</strong><br><span style="font-size:12px;color:var(--ink-soft)">Save for Jun 28 when rested</span></td>
-          <td>Jun 28</td>
-          <td class="price">£19.50 (online)<br><span style="font-size:11px;color:var(--ink-soft)">£22 at gate</span></td>
-          <td class="book-link"><a href="https://www.edinburghcastle.scot/tickets" class="ext">edinburghcastle.scot</a><br><span style="color:var(--amber);font-weight:600;font-size:11px">⚠ Book ahead</span></td>
-        </tr>
-        <tr>
-          <td><strong>Glasgow → Edinburgh train</strong><br><span style="font-size:12px;color:var(--ink-soft)">Queen Street → Waverley · ~50 min</span></td>
-          <td>Jun 22 & 28</td>
-          <td class="price">~£15–20</td>
-          <td class="book-link"><a href="https://www.scotrail.co.uk" class="ext">scotrail.co.uk</a></td>
-        </tr>
-        <tr>
-          <td><strong>Glasgow → Oban train</strong><br><span style="font-size:12px;color:var(--ink-soft)">Queen Street → Oban · ~2.5 hrs</span></td>
-          <td>Jun 24</td>
-          <td class="price">~£25–35 return</td>
-          <td class="book-link"><a href="https://www.scotrail.co.uk" class="ext">scotrail.co.uk</a></td>
-        </tr>
-        <tr>
-          <td><strong>Kelvingrove Art Gallery</strong></td>
-          <td>Jun 23</td>
-          <td class="price" style="color:var(--moss);font-weight:700">Free</td>
-          <td class="book-link">No booking needed</td>
-        </tr>
-        <tr>
-          <td><strong>Glasgow Necropolis</strong></td>
-          <td>Jun 23</td>
-          <td class="price" style="color:var(--moss);font-weight:700">Free</td>
-          <td class="book-link">No booking needed</td>
-        </tr>
-        <tr>
-          <td><strong>Riverside Museum</strong></td>
-          <td>Jun 27</td>
-          <td class="price" style="color:var(--moss);font-weight:700">Free</td>
-          <td class="book-link">No booking needed</td>
-        </tr>
-        <tr>
-          <td><strong>Burrell Collection</strong></td>
-          <td>Jun 26</td>
-          <td class="price" style="color:var(--moss);font-weight:700">Free</td>
-          <td class="book-link">No booking needed</td>
-        </tr>
-        <tr>
-          <td><strong>National Museum of Scotland</strong></td>
-          <td>Jun 22</td>
-          <td class="price" style="color:var(--moss);font-weight:700">Free</td>
-          <td class="book-link">No booking needed</td>
-        </tr>
-      </tbody>
-    </table>
-    <p style="font-size:12px;color:var(--ink-soft);margin-top:12px">All prices in GBP (£). Confirm costs at booking — prices may have changed. Puffin tour prices estimated from operator listings; check <a href="https://www.turusmara.com" class="ext">turusmara.com</a> for exact current pricing.</p>
-  </div>
-
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--flight)"></div>Travel</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--heather)"></div>Edinburgh</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--moss)"></div>Glasgow sights</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--puffin)"></div>Puffins</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Highlands</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--loch)"></div>City / food</div>
+  <div class="legend-item"><span style="opacity:0.6">🔒</span> Fixed (flights, bookings)</div>
 </div>
 
-<footer>
-  <strong>Scotland · June 2026</strong> &nbsp;·&nbsp; Itinerary prepared with ♥ &nbsp;·&nbsp; Prices and availability subject to change — always confirm at time of booking.
-</footer>
+<div class="cal-toolbar">
+  <span>↕ Drag events to reorder within a day or move between days — saved automatically</span>
+  <div class="cal-toolbar-actions">
+    <button type="button" class="cal-btn" id="export-layout">Export</button>
+    <button type="button" class="cal-btn cal-btn-primary" id="reset-layout">Reset itinerary</button>
+  </div>
+</div>
+
+<div class="cal-wrap">
+  <div class="cal-grid">
+
+    <!-- SUN 21 - depart -->
+    <div class="day-col" data-day="jun-21">
+      <div class="day-col-header theme-flight" style="background:var(--flight)">
+        <div class="dow">Sunday</div>
+        <div class="dnum">Jun 21</div>
+        <div class="dtag">Departure</div>
+      </div>
+      <div class="day-col-body">
+        <div class="ev ev-flight" data-id="depart-toronto" data-locked>
+          <div class="ev-time">10:05 PM</div>
+          <div class="ev-title">✈ Depart Toronto YYZ</div>
+          <div class="ev-note">Overnight flight to Glasgow</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MON 22 - arrive + Edinburgh -->
+    <div class="day-col" data-day="jun-22">
+      <div class="day-col-header theme-heather">
+        <div class="dow">Monday</div>
+        <div class="dnum">Jun 22</div>
+        <div class="dtag">Arrive · Edinburgh</div>
+      </div>
+      <div class="day-col-body">
+        <div class="ev ev-flight" data-id="land-gla" data-locked>
+          <div class="ev-time">Morning</div>
+          <div class="ev-title">✈ Land in Glasgow (GLA)</div>
+          <div class="ev-note">747 bus → Buchanan Bus Station (~30 min)</div>
+        </div>
+        <div class="ev ev-loch" data-id="train-edinburgh">
+          <div class="ev-time">Midday</div>
+          <div class="ev-title">🚂 Train to Edinburgh</div>
+          <div class="ev-note">Queen St → Waverley, ~50 min</div>
+          <span class="ev-cost cost-book">~£15–20</span>
+          <div><a class="ev-link" href="https://www.scotrail.co.uk">scotrail.co.uk</a></div>
+        </div>
+        <div class="ev ev-heather" data-id="royal-mile">
+          <div class="ev-time">Afternoon</div>
+          <div class="ev-title">🏰 Royal Mile wander</div>
+          <div class="ev-note">Castle Esplanade → Holyrood. Closes & alleys along the way.</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-heather" data-id="victoria-street">
+          <div class="ev-time">Late aft.</div>
+          <div class="ev-title">Victoria Street</div>
+          <div class="ev-note">Colourful curved street — Diagon Alley vibes</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-heather" data-id="grassmarket-dinner">
+          <div class="ev-time">Evening</div>
+          <div class="ev-title">Grassmarket dinner</div>
+          <div class="ev-note">Pub dinner, very atmospheric, easy on jet lag</div>
+        </div>
+        <div class="ev ev-neutral" data-id="note-edinburgh-save">
+          <div class="ev-time">Note</div>
+          <div class="ev-note">Save Edinburgh Castle, Arthur's Seat, New Town for the rested return trip (Jun 28). Last train back ~11:45pm.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TUE 23 - Glasgow West End -->
+    <div class="day-col" data-day="jun-23">
+      <div class="day-col-header theme-moss">
+        <div class="dow">Tuesday</div>
+        <div class="dnum">Jun 23</div>
+        <div class="dtag">Glasgow West End</div>
+      </div>
+      <div class="day-col-body">
+        <div class="ev ev-moss" data-id="necropolis">
+          <div class="ev-time">Morning</div>
+          <div class="ev-title">Glasgow Necropolis</div>
+          <div class="ev-note">Highly recommended — hillside cemetery, city views</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-moss" data-id="cathedral">
+          <div class="ev-time">Late AM</div>
+          <div class="ev-title">Glasgow Cathedral</div>
+          <div class="ev-note">Right next to Necropolis</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-loch" data-id="lunch-west-end">
+          <div class="ev-time">Lunch</div>
+          <div class="ev-title">☕ Paper Cup or Naked Soup</div>
+          <div class="ev-note">West End</div>
+        </div>
+        <div class="ev ev-moss" data-id="kelvingrove">
+          <div class="ev-time">Afternoon</div>
+          <div class="ev-title">Kelvingrove Art Gallery</div>
+          <div class="ev-note">World-class, free, stunning building</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-moss" data-id="uni-botanic">
+          <div class="ev-time">Late aft.</div>
+          <div class="ev-title">University of Glasgow & Botanic Gardens</div>
+          <div class="ev-note">Gothic campus + riverside park</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-loch" data-id="dinner-focaccia">
+          <div class="ev-time">Evening</div>
+          <div class="ev-title">🍽 Focaccia</div>
+          <div class="ev-note">West End dinner</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WED 24 - Puffins -->
+    <div class="day-col" data-day="jun-24">
+      <div class="day-col-header theme-puffin">
+        <div class="dow">Wednesday</div>
+        <div class="dnum">Jun 24</div>
+        <div class="dtag">🐦 Puffin Day</div>
+      </div>
+      <div class="day-col-body">
+        <div class="ev ev-puffin" data-id="train-oban" data-locked>
+          <div class="ev-time">7:30 AM</div>
+          <div class="ev-title">🚂 Train to Oban</div>
+          <div class="ev-note">~2.5 hrs, scenic route</div>
+          <span class="ev-cost cost-book">~£25–35</span>
+        </div>
+        <div class="ev ev-puffin" data-id="ferry-ulva" data-locked>
+          <div class="ev-time">Midday</div>
+          <div class="ev-title">⛴ Ferry + minibus to Ulva Ferry</div>
+          <div class="ev-note">Coordinated by Turus Mara</div>
+        </div>
+        <div class="ev ev-puffin" data-id="turus-mara" data-locked>
+          <div class="ev-time">All day</div>
+          <div class="ev-title">🐦 Turus Mara boat tour</div>
+          <div class="ev-note">2+ hrs on Lunga with puffins. Plus Fingal's Cave on Staffa.</div>
+          <span class="ev-cost cost-book">~£65–75</span>
+          <div><a class="ev-link" href="https://www.turusmara.com">turusmara.com</a></div>
+        </div>
+        <div class="ev ev-neutral" data-id="note-puffin-book">
+          <div class="ev-time">Note</div>
+          <div class="ev-note">⚠ Book this tour ASAP — limited spots, sells out. Weather dependent.</div>
+        </div>
+        <div class="ev ev-puffin" data-id="train-back-glasgow" data-locked>
+          <div class="ev-time">~7 PM</div>
+          <div class="ev-title">🚂 Train back to Glasgow</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THU 25 - Highlands -->
+    <div class="day-col" data-day="jun-25">
+      <div class="day-col-header theme-amber">
+        <div class="dow">Thursday</div>
+        <div class="dnum">Jun 25</div>
+        <div class="dtag">The Highlands</div>
+      </div>
+      <div class="day-col-body">
+        <div class="ev ev-amber" data-id="rabbies-departs" data-locked>
+          <div class="ev-time">8:30 AM</div>
+          <div class="ev-title">🚌 Rabbie's tour departs</div>
+          <div class="ev-note">Buchanan Bus Station, small minibus</div>
+          <span class="ev-cost cost-book">~£75–85</span>
+          <div><a class="ev-link" href="https://www.rabbies.com/en-us/tour/loch-ness-glencoe-the-highlands-day-tour-from-glasgow">rabbies.com</a></div>
+        </div>
+        <div class="ev ev-amber" data-id="loch-lomond">
+          <div class="ev-time">Morning</div>
+          <div class="ev-title">Loch Lomond & Luss</div>
+          <div class="ev-note">First scenic stop</div>
+        </div>
+        <div class="ev ev-amber" data-id="glencoe">
+          <div class="ev-time">Midday</div>
+          <div class="ev-title">Glencoe & Rannoch Moor</div>
+          <div class="ev-note">Dramatic valley, Skyfall filming spot</div>
+        </div>
+        <div class="ev ev-amber" data-id="fort-william-lunch">
+          <div class="ev-time">Lunch</div>
+          <div class="ev-title">Fort William</div>
+          <div class="ev-note">At the base of Ben Nevis</div>
+        </div>
+        <div class="ev ev-amber" data-id="loch-ness">
+          <div class="ev-time">Afternoon</div>
+          <div class="ev-title">Loch Ness & Pitlochry</div>
+          <div class="ev-note">Optional boat cruise (~£15 extra)</div>
+        </div>
+        <div class="ev ev-neutral" data-id="note-highland-cow">
+          <div class="ev-time">Note</div>
+          <div class="ev-note">Ask your guide about a Highland cow stop! Returns ~8:30 PM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRI 26 - Concert -->
+    <div class="day-col" data-day="jun-26">
+      <div class="day-col-header theme-heather">
+        <div class="dow">Friday</div>
+        <div class="dnum">Jun 26</div>
+        <div class="dtag">🎶 Concert Day</div>
+      </div>
+      <div class="day-col-body">
+        <div class="ev ev-heather" data-id="pollok-park">
+          <div class="ev-time">Morning</div>
+          <div class="ev-title">Pollok Country Park</div>
+          <div class="ev-note">Highland cows + Pollok House</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-heather" data-id="burrell">
+          <div class="ev-time">Late AM</div>
+          <div class="ev-title">Burrell Collection</div>
+          <div class="ev-note">World-class art museum, inside the park</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-loch" data-id="lunch-southside">
+          <div class="ev-time">Lunch</div>
+          <div class="ev-title">🍕 Sears Pizza or Zennor</div>
+          <div class="ev-note">Southside</div>
+        </div>
+        <div class="ev ev-loch" data-id="god-shot">
+          <div class="ev-time">Afternoon</div>
+          <div class="ev-title">☕ God Shot</div>
+          <div class="ev-note">Relax before the show — keep it light</div>
+        </div>
+        <div class="ev ev-loch" data-id="pre-show-dinner">
+          <div class="ev-time">Pre-show</div>
+          <div class="ev-title">🍽 Dishoom or Margo</div>
+          <div class="ev-note">City centre, near venue</div>
+        </div>
+        <div class="ev concert" data-id="concert" data-locked>
+          <div class="ev-time">Tonight</div>
+          <div class="ev-title">🎶 CONCERT</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAT 27 - Glasgow city -->
+    <div class="day-col" data-day="jun-27">
+      <div class="day-col-header theme-loch">
+        <div class="dow">Saturday</div>
+        <div class="dnum">Jun 27</div>
+        <div class="dtag">Glasgow City</div>
+      </div>
+      <div class="day-col-body">
+        <div class="ev ev-loch" data-id="riverside">
+          <div class="ev-time">Morning</div>
+          <div class="ev-title">Riverside Museum</div>
+          <div class="ev-note">Zaha Hadid building, transport museum</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-loch" data-id="merchant-city">
+          <div class="ev-time">Midday</div>
+          <div class="ev-title">Merchant City wander</div>
+          <div class="ev-note">Shops, street art, cafes</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-loch" data-id="buchanan-street">
+          <div class="ev-time">Afternoon</div>
+          <div class="ev-title">Buchanan Street & Princes Square</div>
+          <div class="ev-note">Shopping, ornate Victorian arcade</div>
+        </div>
+        <div class="ev ev-loch" data-id="dinner-margo">
+          <div class="ev-time">Evening</div>
+          <div class="ev-title">🍽 Margo or Bar Vini</div>
+          <div class="ev-note">Sit-down dinner</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUN 28 - flex / Edinburgh return -->
+    <div class="day-col" data-day="jun-28">
+      <div class="day-col-header theme-heather">
+        <div class="dow">Sunday</div>
+        <div class="dnum">Jun 28</div>
+        <div class="dtag">Flex / Edinburgh #2</div>
+      </div>
+      <div class="day-col-body">
+        <div class="ev ev-heather" data-id="train-edinburgh-2">
+          <div class="ev-time">Morning</div>
+          <div class="ev-title">🚂 Train to Edinburgh (optional)</div>
+          <div class="ev-note">Rested this time — go for the big sights</div>
+        </div>
+        <div class="ev ev-heather" data-id="edinburgh-castle">
+          <div class="ev-time">Midday</div>
+          <div class="ev-title">🏰 Edinburgh Castle</div>
+          <div class="ev-note">Allow 2+ hrs. Stone of Destiny now in Perth.</div>
+          <span class="ev-cost cost-book">£19.50 online</span>
+          <div><a class="ev-link" href="https://www.edinburghcastle.scot/tickets">edinburghcastle.scot</a></div>
+        </div>
+        <div class="ev ev-heather" data-id="arthurs-seat">
+          <div class="ev-time">Afternoon</div>
+          <div class="ev-title">Arthur's Seat hike</div>
+          <div class="ev-note">~1 hr, panoramic views</div>
+          <span class="ev-cost cost-free">Free</span>
+        </div>
+        <div class="ev ev-neutral" data-id="alt-loch-lomond">
+          <div class="ev-time">Alt. plan</div>
+          <div class="ev-note">If skipping Edinburgh: slow Glasgow morning + train to Balloch/Loch Lomond (~45 min, £10)</div>
+        </div>
+        <div class="ev ev-loch" data-id="final-dinner">
+          <div class="ev-time">Evening</div>
+          <div class="ev-title">Final dinner & pack</div>
+          <div class="ev-note">Early night — flight tomorrow!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MON 29 - fly home -->
+    <div class="day-col" data-day="jun-29">
+      <div class="day-col-header theme-flight" style="background:var(--flight)">
+        <div class="dow">Monday</div>
+        <div class="dnum">Jun 29</div>
+        <div class="dtag">Fly Home</div>
+      </div>
+      <div class="day-col-body">
+        <div class="ev ev-flight" data-id="leave-airport" data-locked>
+          <div class="ev-time">8:30 AM</div>
+          <div class="ev-title">Leave for airport</div>
+          <div class="ev-note">~45 min to GLA</div>
+        </div>
+        <div class="ev ev-flight" data-id="depart-gla" data-locked>
+          <div class="ev-time">11:00 AM</div>
+          <div class="ev-title">✈ Depart Glasgow GLA</div>
+          <div class="ev-note">→ Toronto YYZ</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section-title">Bookings & Costs at a Glance</div>
+<div class="costs-wrap">
+  <table class="costs-table">
+    <thead>
+      <tr><th>What</th><th>When</th><th>Cost (per person)</th><th>Book at</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Turus Mara Puffin Tour</strong><br><span style="font-size:11px;color:var(--ink-soft)">Treshnish Isles & Staffa, full day</span></td>
+        <td>Jun 24</td>
+        <td class="price">~£65–75</td>
+        <td><a href="https://www.turusmara.com">turusmara.com</a><br><span style="color:var(--puffin);font-weight:700;font-size:10.5px">⚠ Book ASAP</span></td>
+      </tr>
+      <tr>
+        <td><strong>Rabbie's Highlands Tour</strong><br><span style="font-size:11px;color:var(--ink-soft)">Glencoe, Loch Ness & Highlands</span></td>
+        <td>Jun 25</td>
+        <td class="price">~£75–85</td>
+        <td><a href="https://www.rabbies.com/en-us/tour/loch-ness-glencoe-the-highlands-day-tour-from-glasgow">rabbies.com</a></td>
+      </tr>
+      <tr>
+        <td><strong>Edinburgh Castle</strong></td>
+        <td>Jun 28</td>
+        <td class="price">£19.50 online<br><span style="font-size:10.5px;color:var(--ink-soft)">£22 at gate</span></td>
+        <td><a href="https://www.edinburghcastle.scot/tickets">edinburghcastle.scot</a><br><span style="color:var(--amber);font-weight:700;font-size:10.5px">⚠ Book ahead</span></td>
+      </tr>
+      <tr>
+        <td><strong>Glasgow → Edinburgh train</strong></td>
+        <td>Jun 22 & 28</td>
+        <td class="price">~£15–20</td>
+        <td><a href="https://www.scotrail.co.uk">scotrail.co.uk</a></td>
+      </tr>
+      <tr>
+        <td><strong>Glasgow → Oban train</strong></td>
+        <td>Jun 24</td>
+        <td class="price">~£25–35 return</td>
+        <td><a href="https://www.scotrail.co.uk">scotrail.co.uk</a></td>
+      </tr>
+      <tr>
+        <td><strong>Kelvingrove / Necropolis / Riverside / Burrell / Nat'l Museum</strong></td>
+        <td>Various</td>
+        <td class="price" style="color:var(--moss)">Free</td>
+        <td>No booking needed</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:11.5px;color:var(--ink-soft);margin-top:12px">All prices in GBP. Confirm at booking — prices may have changed since this was put together.</p>
+</div>
+
+<footer>Scotland · June 2026 &nbsp;·&nbsp; Prices and availability subject to change</footer>
+
+<div class="save-toast" id="save-toast">Layout saved</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script>
+(function () {
+  const STORAGE_KEY = 'scotland-trip-layout-v1';
+
+  const toast = document.getElementById('save-toast');
+  let toastTimer;
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1600);
+  }
+
+  function getDayColumns() {
+    return [...document.querySelectorAll('.day-col[data-day]')];
+  }
+
+  function getEventMap() {
+    const map = new Map();
+    document.querySelectorAll('.ev[data-id]').forEach(el => map.set(el.dataset.id, el));
+    return map;
+  }
+
+  function readLayoutFromDOM() {
+    const layout = {};
+    getDayColumns().forEach(col => {
+      layout[col.dataset.day] = [...col.querySelectorAll('.ev[data-id]')].map(el => el.dataset.id);
+    });
+    return layout;
+  }
+
+  function isValidLayout(saved, eventMap, defaultLayout) {
+    if (!saved || typeof saved !== 'object') return false;
+    const allIds = [...eventMap.keys()];
+    const savedIds = Object.values(saved).flat();
+    if (savedIds.length !== allIds.length) return false;
+    const idSet = new Set(savedIds);
+    if (idSet.size !== allIds.length) return false;
+    for (const id of allIds) {
+      if (!idSet.has(id)) return false;
+    }
+    for (const day of Object.keys(defaultLayout)) {
+      if (!Array.isArray(saved[day])) return false;
+    }
+    return true;
+  }
+
+  function applyLayout(layout, eventMap) {
+    getDayColumns().forEach(col => {
+      const body = col.querySelector('.day-col-body');
+      const ids = layout[col.dataset.day] || [];
+      ids.forEach(id => {
+        const el = eventMap.get(id);
+        if (el) body.appendChild(el);
+      });
+    });
+  }
+
+  function saveLayout() {
+    const layout = readLayoutFromDOM();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(layout));
+    showToast('Layout saved');
+  }
+
+  function restoreLayout() {
+    const eventMap = getEventMap();
+    const defaultLayout = readLayoutFromDOM();
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (isValidLayout(saved, eventMap, defaultLayout)) {
+        applyLayout(saved, eventMap);
+      }
+    } catch (_) { /* ignore corrupt data */ }
+    return eventMap;
+  }
+
+  function initSortable() {
+    getDayColumns().forEach(col => {
+      const body = col.querySelector('.day-col-body');
+      new Sortable(body, {
+        group: 'scotland-calendar',
+        animation: 180,
+        draggable: '.ev:not([data-locked])',
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        dragClass: 'sortable-drag',
+        delay: 120,
+        delayOnTouchOnly: true,
+        touchStartThreshold: 5,
+        onStart() {
+          document.querySelectorAll('.day-col-body').forEach(b => b.classList.add('sortable-drag-active'));
+        },
+        onEnd() {
+          document.querySelectorAll('.day-col-body').forEach(b => b.classList.remove('sortable-drag-active'));
+          saveLayout();
+        }
+      });
+    });
+  }
+
+  document.getElementById('reset-layout').addEventListener('click', () => {
+    if (confirm('Reset the itinerary to the original plan? Your custom layout will be cleared.')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+
+  document.getElementById('export-layout').addEventListener('click', () => {
+    const data = JSON.stringify(readLayoutFromDOM(), null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'scotland-trip-layout.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Exported JSON');
+  });
+
+  restoreLayout();
+  initSortable();
+})();
+</script>
 
 </body>
 </html>
