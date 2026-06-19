@@ -123,6 +123,10 @@
     padding: 12px 14px;
     position: sticky;
     top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 10px;
   }
   .day-col-header .dow {
     font-size: 10px;
@@ -314,6 +318,107 @@
   }
   .save-toast.show { opacity: 1; transform: translateY(0); }
 
+  .read-only-banner {
+    background: #fff8e6;
+    border-bottom: 1px solid #ecd2a4;
+    color: #6e4500;
+    text-align: center;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  .read-only-banner.hidden { display: none; }
+
+  .day-col-header { position: relative; }
+  .day-add-btn {
+    margin-left: auto;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .day-add-btn:hover { background: rgba(255,255,255,0.35); }
+  body.view-list .day-col-header .day-add-btn { margin-left: 0; }
+
+  .ev { position: relative; }
+  .ev-delete {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.08);
+    color: var(--ink-mid);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .ev:hover .ev-delete { opacity: 1; }
+  .ev-delete:hover { background: #fbeae3; color: var(--puffin); }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 200;
+  }
+  .modal-backdrop.hidden { display: none; }
+  .modal {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .modal h2 {
+    font-family: var(--serif);
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  .modal label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+    margin-top: 12px;
+  }
+  .modal label:first-of-type { margin-top: 0; }
+  .modal input, .modal select, .modal textarea {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 13px;
+    padding: 8px 10px;
+    border: 1px solid var(--grid-line-strong);
+    border-radius: 6px;
+  }
+  .modal textarea { resize: vertical; min-height: 72px; }
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  body.read-only .ev:not([data-locked]) { cursor: default; }
+  body.read-only .ev-delete { display: none; }
+
   /* legend */
   .legend {
     display: flex;
@@ -484,6 +589,10 @@
   ⚠ Book ahead: <a href="https://www.turusmara.com">Turus Mara puffin tour</a> · <a href="https://www.rabbies.com/en-us/tour/loch-ness-glencoe-the-highlands-day-tour-from-glasgow">Rabbie's Highlands tour</a> · <a href="https://www.edinburghcastle.scot/tickets">Edinburgh Castle</a>
 </div>
 
+<div id="read-only-banner" class="read-only-banner hidden">
+  View only — add <code>?edit=your-key</code> to the URL to rearrange, add, or remove events.
+</div>
+
 <div class="legend">
   <div class="legend-item"><div class="legend-dot" style="background:var(--flight)"></div>Travel</div>
   <div class="legend-item"><div class="legend-dot" style="background:var(--heather)"></div>Edinburgh</div>
@@ -507,327 +616,7 @@
 </div>
 
 <div class="cal-wrap">
-  <div class="cal-grid">
-
-    <!-- SUN 21 - depart -->
-    <div class="day-col" data-day="jun-21">
-      <div class="day-col-header theme-flight" style="background:var(--flight)">
-        <div class="dow">Sunday</div>
-        <div class="dnum">Jun 21</div>
-        <div class="dtag">Departure</div>
-      </div>
-      <div class="day-col-body">
-        <div class="ev ev-flight" data-id="depart-toronto" data-locked>
-          <div class="ev-time">10:05 PM</div>
-          <div class="ev-title">✈ Depart Toronto YYZ</div>
-          <div class="ev-note">Overnight flight to Glasgow</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MON 22 - arrive + Edinburgh -->
-    <div class="day-col" data-day="jun-22">
-      <div class="day-col-header theme-heather">
-        <div class="dow">Monday</div>
-        <div class="dnum">Jun 22</div>
-        <div class="dtag">Arrive · Edinburgh</div>
-      </div>
-      <div class="day-col-body">
-        <div class="ev ev-flight" data-id="land-gla" data-locked>
-          <div class="ev-time">Morning</div>
-          <div class="ev-title">✈ Land in Glasgow (GLA)</div>
-          <div class="ev-note">747 bus → Buchanan Bus Station (~30 min)</div>
-        </div>
-        <div class="ev ev-loch" data-id="train-edinburgh">
-          <div class="ev-time">Midday</div>
-          <div class="ev-title">🚂 Train to Edinburgh</div>
-          <div class="ev-note">Queen St → Waverley, ~50 min</div>
-          <span class="ev-cost cost-book">~£15–20</span>
-          <div><a class="ev-link" href="https://www.scotrail.co.uk">scotrail.co.uk</a></div>
-        </div>
-        <div class="ev ev-heather" data-id="royal-mile">
-          <div class="ev-time">Afternoon</div>
-          <div class="ev-title">🏰 Royal Mile wander</div>
-          <div class="ev-note">Castle Esplanade → Holyrood. Closes & alleys along the way.</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-heather" data-id="victoria-street">
-          <div class="ev-time">Late aft.</div>
-          <div class="ev-title">Victoria Street</div>
-          <div class="ev-note">Colourful curved street — Diagon Alley vibes</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-heather" data-id="grassmarket-dinner">
-          <div class="ev-time">Evening</div>
-          <div class="ev-title">Grassmarket dinner</div>
-          <div class="ev-note">Pub dinner, very atmospheric, easy on jet lag</div>
-        </div>
-        <div class="ev ev-neutral" data-id="note-edinburgh-save">
-          <div class="ev-time">Note</div>
-          <div class="ev-note">Save Edinburgh Castle, Arthur's Seat, New Town for the rested return trip (Jun 28). Last train back ~11:45pm.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TUE 23 - Glasgow West End -->
-    <div class="day-col" data-day="jun-23">
-      <div class="day-col-header theme-moss">
-        <div class="dow">Tuesday</div>
-        <div class="dnum">Jun 23</div>
-        <div class="dtag">Glasgow West End</div>
-      </div>
-      <div class="day-col-body">
-        <div class="ev ev-moss" data-id="necropolis">
-          <div class="ev-time">Morning</div>
-          <div class="ev-title">Glasgow Necropolis</div>
-          <div class="ev-note">Highly recommended — hillside cemetery, city views</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-moss" data-id="cathedral">
-          <div class="ev-time">Late AM</div>
-          <div class="ev-title">Glasgow Cathedral</div>
-          <div class="ev-note">Right next to Necropolis</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-loch" data-id="lunch-west-end">
-          <div class="ev-time">Lunch</div>
-          <div class="ev-title">☕ Paper Cup or Naked Soup</div>
-          <div class="ev-note">West End</div>
-        </div>
-        <div class="ev ev-moss" data-id="kelvingrove">
-          <div class="ev-time">Afternoon</div>
-          <div class="ev-title">Kelvingrove Art Gallery</div>
-          <div class="ev-note">World-class, free, stunning building</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-moss" data-id="uni-botanic">
-          <div class="ev-time">Late aft.</div>
-          <div class="ev-title">University of Glasgow & Botanic Gardens</div>
-          <div class="ev-note">Gothic campus + riverside park</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-loch" data-id="dinner-focaccia">
-          <div class="ev-time">Evening</div>
-          <div class="ev-title">🍽 Focaccia</div>
-          <div class="ev-note">West End dinner</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- WED 24 - Puffins -->
-    <div class="day-col" data-day="jun-24">
-      <div class="day-col-header theme-puffin">
-        <div class="dow">Wednesday</div>
-        <div class="dnum">Jun 24</div>
-        <div class="dtag">🐦 Puffin Day</div>
-      </div>
-      <div class="day-col-body">
-        <div class="ev ev-puffin" data-id="train-oban" data-locked>
-          <div class="ev-time">7:30 AM</div>
-          <div class="ev-title">🚂 Train to Oban</div>
-          <div class="ev-note">~2.5 hrs, scenic route</div>
-          <span class="ev-cost cost-book">~£25–35</span>
-        </div>
-        <div class="ev ev-puffin" data-id="ferry-ulva" data-locked>
-          <div class="ev-time">Midday</div>
-          <div class="ev-title">⛴ Ferry + minibus to Ulva Ferry</div>
-          <div class="ev-note">Coordinated by Turus Mara</div>
-        </div>
-        <div class="ev ev-puffin" data-id="turus-mara" data-locked>
-          <div class="ev-time">All day</div>
-          <div class="ev-title">🐦 Turus Mara boat tour</div>
-          <div class="ev-note">2+ hrs on Lunga with puffins. Plus Fingal's Cave on Staffa.</div>
-          <span class="ev-cost cost-book">~£65–75</span>
-          <div><a class="ev-link" href="https://www.turusmara.com">turusmara.com</a></div>
-        </div>
-        <div class="ev ev-neutral" data-id="note-puffin-book">
-          <div class="ev-time">Note</div>
-          <div class="ev-note">⚠ Book this tour ASAP — limited spots, sells out. Weather dependent.</div>
-        </div>
-        <div class="ev ev-puffin" data-id="train-back-glasgow" data-locked>
-          <div class="ev-time">~7 PM</div>
-          <div class="ev-title">🚂 Train back to Glasgow</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- THU 25 - Highlands -->
-    <div class="day-col" data-day="jun-25">
-      <div class="day-col-header theme-amber">
-        <div class="dow">Thursday</div>
-        <div class="dnum">Jun 25</div>
-        <div class="dtag">The Highlands</div>
-      </div>
-      <div class="day-col-body">
-        <div class="ev ev-amber" data-id="rabbies-departs" data-locked>
-          <div class="ev-time">8:30 AM</div>
-          <div class="ev-title">🚌 Rabbie's tour departs</div>
-          <div class="ev-note">Buchanan Bus Station, small minibus</div>
-          <span class="ev-cost cost-book">~£75–85</span>
-          <div><a class="ev-link" href="https://www.rabbies.com/en-us/tour/loch-ness-glencoe-the-highlands-day-tour-from-glasgow">rabbies.com</a></div>
-        </div>
-        <div class="ev ev-amber" data-id="loch-lomond">
-          <div class="ev-time">Morning</div>
-          <div class="ev-title">Loch Lomond & Luss</div>
-          <div class="ev-note">First scenic stop</div>
-        </div>
-        <div class="ev ev-amber" data-id="glencoe">
-          <div class="ev-time">Midday</div>
-          <div class="ev-title">Glencoe & Rannoch Moor</div>
-          <div class="ev-note">Dramatic valley, Skyfall filming spot</div>
-        </div>
-        <div class="ev ev-amber" data-id="fort-william-lunch">
-          <div class="ev-time">Lunch</div>
-          <div class="ev-title">Fort William</div>
-          <div class="ev-note">At the base of Ben Nevis</div>
-        </div>
-        <div class="ev ev-amber" data-id="loch-ness">
-          <div class="ev-time">Afternoon</div>
-          <div class="ev-title">Loch Ness & Pitlochry</div>
-          <div class="ev-note">Optional boat cruise (~£15 extra)</div>
-        </div>
-        <div class="ev ev-neutral" data-id="note-highland-cow">
-          <div class="ev-time">Note</div>
-          <div class="ev-note">Ask your guide about a Highland cow stop! Returns ~8:30 PM</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FRI 26 - Concert -->
-    <div class="day-col" data-day="jun-26">
-      <div class="day-col-header theme-heather">
-        <div class="dow">Friday</div>
-        <div class="dnum">Jun 26</div>
-        <div class="dtag">🎶 Concert Day</div>
-      </div>
-      <div class="day-col-body">
-        <div class="ev ev-heather" data-id="pollok-park">
-          <div class="ev-time">Morning</div>
-          <div class="ev-title">Pollok Country Park</div>
-          <div class="ev-note">Highland cows + Pollok House</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-heather" data-id="burrell">
-          <div class="ev-time">Late AM</div>
-          <div class="ev-title">Burrell Collection</div>
-          <div class="ev-note">World-class art museum, inside the park</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-loch" data-id="lunch-southside">
-          <div class="ev-time">Lunch</div>
-          <div class="ev-title">🍕 Sears Pizza or Zennor</div>
-          <div class="ev-note">Southside</div>
-        </div>
-        <div class="ev ev-loch" data-id="god-shot">
-          <div class="ev-time">Afternoon</div>
-          <div class="ev-title">☕ God Shot</div>
-          <div class="ev-note">Relax before the show — keep it light</div>
-        </div>
-        <div class="ev ev-loch" data-id="pre-show-dinner">
-          <div class="ev-time">Pre-show</div>
-          <div class="ev-title">🍽 Dishoom or Margo</div>
-          <div class="ev-note">City centre, near venue</div>
-        </div>
-        <div class="ev concert" data-id="concert" data-locked>
-          <div class="ev-time">Tonight</div>
-          <div class="ev-title">🎶 CONCERT</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SAT 27 - Glasgow city -->
-    <div class="day-col" data-day="jun-27">
-      <div class="day-col-header theme-loch">
-        <div class="dow">Saturday</div>
-        <div class="dnum">Jun 27</div>
-        <div class="dtag">Glasgow City</div>
-      </div>
-      <div class="day-col-body">
-        <div class="ev ev-loch" data-id="riverside">
-          <div class="ev-time">Morning</div>
-          <div class="ev-title">Riverside Museum</div>
-          <div class="ev-note">Zaha Hadid building, transport museum</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-loch" data-id="merchant-city">
-          <div class="ev-time">Midday</div>
-          <div class="ev-title">Merchant City wander</div>
-          <div class="ev-note">Shops, street art, cafes</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-loch" data-id="buchanan-street">
-          <div class="ev-time">Afternoon</div>
-          <div class="ev-title">Buchanan Street & Princes Square</div>
-          <div class="ev-note">Shopping, ornate Victorian arcade</div>
-        </div>
-        <div class="ev ev-loch" data-id="dinner-margo">
-          <div class="ev-time">Evening</div>
-          <div class="ev-title">🍽 Margo or Bar Vini</div>
-          <div class="ev-note">Sit-down dinner</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SUN 28 - flex / Edinburgh return -->
-    <div class="day-col" data-day="jun-28">
-      <div class="day-col-header theme-heather">
-        <div class="dow">Sunday</div>
-        <div class="dnum">Jun 28</div>
-        <div class="dtag">Flex / Edinburgh #2</div>
-      </div>
-      <div class="day-col-body">
-        <div class="ev ev-heather" data-id="train-edinburgh-2">
-          <div class="ev-time">Morning</div>
-          <div class="ev-title">🚂 Train to Edinburgh (optional)</div>
-          <div class="ev-note">Rested this time — go for the big sights</div>
-        </div>
-        <div class="ev ev-heather" data-id="edinburgh-castle">
-          <div class="ev-time">Midday</div>
-          <div class="ev-title">🏰 Edinburgh Castle</div>
-          <div class="ev-note">Allow 2+ hrs. Stone of Destiny now in Perth.</div>
-          <span class="ev-cost cost-book">£19.50 online</span>
-          <div><a class="ev-link" href="https://www.edinburghcastle.scot/tickets">edinburghcastle.scot</a></div>
-        </div>
-        <div class="ev ev-heather" data-id="arthurs-seat">
-          <div class="ev-time">Afternoon</div>
-          <div class="ev-title">Arthur's Seat hike</div>
-          <div class="ev-note">~1 hr, panoramic views</div>
-          <span class="ev-cost cost-free">Free</span>
-        </div>
-        <div class="ev ev-neutral" data-id="alt-loch-lomond">
-          <div class="ev-time">Alt. plan</div>
-          <div class="ev-note">If skipping Edinburgh: slow Glasgow morning + train to Balloch/Loch Lomond (~45 min, £10)</div>
-        </div>
-        <div class="ev ev-loch" data-id="final-dinner">
-          <div class="ev-time">Evening</div>
-          <div class="ev-title">Final dinner & pack</div>
-          <div class="ev-note">Early night — flight tomorrow!</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MON 29 - fly home -->
-    <div class="day-col" data-day="jun-29">
-      <div class="day-col-header theme-flight" style="background:var(--flight)">
-        <div class="dow">Monday</div>
-        <div class="dnum">Jun 29</div>
-        <div class="dtag">Fly Home</div>
-      </div>
-      <div class="day-col-body">
-        <div class="ev ev-flight" data-id="leave-airport" data-locked>
-          <div class="ev-time">8:30 AM</div>
-          <div class="ev-title">Leave for airport</div>
-          <div class="ev-note">~45 min to GLA</div>
-        </div>
-        <div class="ev ev-flight" data-id="depart-gla" data-locked>
-          <div class="ev-time">11:00 AM</div>
-          <div class="ev-title">✈ Depart Glasgow GLA</div>
-          <div class="ev-note">→ Toronto YYZ</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
+  <div class="cal-grid" id="cal-grid"></div>
 </div>
 
 <div class="section-title">Bookings & Costs at a Glance</div>
@@ -880,28 +669,109 @@
 
 <footer>Scotland · June 2026 &nbsp;·&nbsp; Prices and availability subject to change</footer>
 
-<div class="save-toast" id="save-toast">Layout saved</div>
+<div class="modal-backdrop hidden" id="event-modal">
+  <div class="modal" role="dialog" aria-labelledby="modal-title">
+    <h2 id="modal-title">Add event</h2>
+    <form id="event-form">
+      <input type="hidden" id="ev-day-id">
+      <label for="ev-time">Time</label>
+      <input type="text" id="ev-time" placeholder="e.g. Morning, 2:00 PM" required>
+      <label for="ev-title">Title</label>
+      <input type="text" id="ev-title" placeholder="Event title" required>
+      <label for="ev-note">Note</label>
+      <textarea id="ev-note" placeholder="Optional details"></textarea>
+      <label for="ev-type">Category</label>
+      <select id="ev-type">
+        <option value="loch">City / food</option>
+        <option value="heather">Edinburgh</option>
+        <option value="moss">Glasgow sights</option>
+        <option value="puffin">Puffins</option>
+        <option value="amber">Highlands</option>
+        <option value="flight">Travel</option>
+        <option value="neutral">Note</option>
+      </select>
+      <div class="modal-actions">
+        <button type="button" class="cal-btn" id="modal-cancel">Cancel</button>
+        <button type="submit" class="cal-btn cal-btn-primary">Add event</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="save-toast" id="save-toast">Saved</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <script>
 (function () {
-  const STORAGE_KEY = 'scotland-trip-layout-v1';
+  const API = '/api/itinerary';
   const VIEW_KEY = 'scotland-trip-view-v1';
+  const EDIT_KEY_STORAGE = 'scotland-trip-edit-key';
+  const POLL_MS = 30000;
+
+  const DAYS = [
+    { id: 'jun-21', dow: 'Sunday', dnum: 'Jun 21', tag: 'Departure', theme: 'flight', headerStyle: 'background:var(--flight)' },
+    { id: 'jun-22', dow: 'Monday', dnum: 'Jun 22', tag: 'Arrive · Edinburgh', theme: 'heather' },
+    { id: 'jun-23', dow: 'Tuesday', dnum: 'Jun 23', tag: 'Glasgow West End', theme: 'moss' },
+    { id: 'jun-24', dow: 'Wednesday', dnum: 'Jun 24', tag: '🐦 Puffin Day', theme: 'puffin' },
+    { id: 'jun-25', dow: 'Thursday', dnum: 'Jun 25', tag: 'The Highlands', theme: 'amber' },
+    { id: 'jun-26', dow: 'Friday', dnum: 'Jun 26', tag: '🎶 Concert Day', theme: 'heather' },
+    { id: 'jun-27', dow: 'Saturday', dnum: 'Jun 27', tag: 'Glasgow City', theme: 'loch' },
+    { id: 'jun-28', dow: 'Sunday', dnum: 'Jun 28', tag: 'Flex / Edinburgh #2', theme: 'heather' },
+    { id: 'jun-29', dow: 'Monday', dnum: 'Jun 29', tag: 'Fly Home', theme: 'flight', headerStyle: 'background:var(--flight)' }
+  ];
 
   const HINTS = {
-    calendar: '↕ Drag events to reorder within a day or move between days — saved automatically',
-    list: '↕ List view — drag events to reorder or move to another day'
+    calendar: '↕ Drag to reorder — changes save for everyone',
+    list: '↕ List view — drag to reorder or move between days'
   };
 
   const toast = document.getElementById('save-toast');
   const toolbarHint = document.getElementById('toolbar-hint');
-  let toastTimer;
+  const readOnlyBanner = document.getElementById('read-only-banner');
+  const modal = document.getElementById('event-modal');
+  const eventForm = document.getElementById('event-form');
+
+  let state = { version: 1, events: [], updatedAt: null, editRequired: false };
+  let canEdit = true;
+  let editKey = null;
+  let saving = false;
+  let applyingRemote = false;
+  let sortables = [];
+  let saveTimer = null;
+  let toastTimer = null;
+
+  function esc(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
 
   function showToast(msg) {
     toast.textContent = msg;
     toast.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toast.classList.remove('show'), 1600);
+  }
+
+  function initEditKey() {
+    const params = new URLSearchParams(location.search);
+    const fromUrl = params.get('edit');
+    if (fromUrl) {
+      sessionStorage.setItem(EDIT_KEY_STORAGE, fromUrl);
+      editKey = fromUrl;
+    } else {
+      editKey = sessionStorage.getItem(EDIT_KEY_STORAGE);
+    }
+    updateEditMode();
+  }
+
+  function updateEditMode() {
+    if (state.editRequired) {
+      canEdit = !!editKey;
+    } else {
+      canEdit = true;
+    }
+    document.body.classList.toggle('read-only', !canEdit);
+    readOnlyBanner.classList.toggle('hidden', canEdit || !state.editRequired);
   }
 
   function setView(mode) {
@@ -913,86 +783,164 @@
       btn.classList.toggle('active', active);
       btn.setAttribute('aria-pressed', String(active));
     });
-    toolbarHint.textContent = HINTS[view];
+    toolbarHint.textContent = canEdit ? HINTS[view] : 'View only — add ?edit=your-key to the URL to make changes';
     localStorage.setItem(VIEW_KEY, view);
   }
 
-  document.querySelectorAll('.view-btn').forEach(btn => {
-    btn.addEventListener('click', () => setView(btn.dataset.view));
-  });
+  async function loadItinerary() {
+    const res = await fetch(API);
+    if (!res.ok) throw new Error('Failed to load');
+    return res.json();
+  }
 
-  const savedView = localStorage.getItem(VIEW_KEY);
-  if (savedView === 'list' || savedView === 'calendar') {
-    setView(savedView);
+  async function loadDefaultItinerary() {
+    const res = await fetch('/data/default-itinerary.json');
+    if (!res.ok) throw new Error('No default');
+    return res.json();
+  }
+
+  function eventsForDay(dayId) {
+    return state.events.filter(e => e.dayId === dayId);
+  }
+
+  function renderEvent(ev) {
+    const el = document.createElement('div');
+    const typeClass = ev.concert ? 'concert' : 'ev-' + ev.type;
+    el.className = 'ev ' + typeClass;
+    el.dataset.id = ev.id;
+    if (ev.locked) el.dataset.locked = '';
+
+    let html = '';
+    if (canEdit && !ev.locked) {
+      html += '<button type="button" class="ev-delete" data-id="' + esc(ev.id) + '" title="Remove">×</button>';
+    }
+    html += '<div class="ev-time">' + esc(ev.time) + '</div>';
+    if (ev.title) html += '<div class="ev-title">' + esc(ev.title) + '</div>';
+    if (ev.note) html += '<div class="ev-note">' + esc(ev.note) + '</div>';
+    if (ev.cost && ev.cost.label) {
+      html += '<span class="ev-cost cost-' + esc(ev.cost.kind || 'book') + '">' + esc(ev.cost.label) + '</span>';
+    }
+    if (ev.link && ev.link.url) {
+      html += '<div><a class="ev-link" href="' + esc(ev.link.url) + '" target="_blank" rel="noopener">' +
+        esc(ev.link.text || ev.link.url) + '</a></div>';
+    }
+    el.innerHTML = html;
+    return el;
+  }
+
+  function destroySortables() {
+    sortables.forEach(s => s.destroy());
+    sortables = [];
+  }
+
+  function render() {
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    DAYS.forEach(day => {
+      const col = document.createElement('div');
+      col.className = 'day-col';
+      col.dataset.day = day.id;
+
+      const headerStyle = day.headerStyle ? ' style="' + day.headerStyle + '"' : '';
+      const addBtn = canEdit
+        ? '<button type="button" class="day-add-btn" data-day="' + day.id + '" title="Add event">+</button>'
+        : '';
+
+      col.innerHTML =
+        '<div class="day-col-header theme-' + day.theme + '"' + headerStyle + '>' +
+          '<div class="dow">' + esc(day.dow) + '</div>' +
+          '<div class="dnum">' + esc(day.dnum) + '</div>' +
+          '<div class="dtag">' + esc(day.tag) + '</div>' +
+          addBtn +
+        '</div>' +
+        '<div class="day-col-body"></div>';
+
+      const body = col.querySelector('.day-col-body');
+      eventsForDay(day.id).forEach(ev => body.appendChild(renderEvent(ev)));
+      grid.appendChild(col);
+    });
+
+    destroySortables();
+    if (canEdit) initSortable();
+    bindHandlers();
   }
 
   function getDayColumns() {
     return [...document.querySelectorAll('.day-col[data-day]')];
   }
 
-  function getEventMap() {
-    const map = new Map();
-    document.querySelectorAll('.ev[data-id]').forEach(el => map.set(el.dataset.id, el));
-    return map;
-  }
-
-  function readLayoutFromDOM() {
-    const layout = {};
+  function eventsFromDOM() {
+    const events = [];
     getDayColumns().forEach(col => {
-      layout[col.dataset.day] = [...col.querySelectorAll('.ev[data-id]')].map(el => el.dataset.id);
-    });
-    return layout;
-  }
-
-  function isValidLayout(saved, eventMap, defaultLayout) {
-    if (!saved || typeof saved !== 'object') return false;
-    const allIds = [...eventMap.keys()];
-    const savedIds = Object.values(saved).flat();
-    if (savedIds.length !== allIds.length) return false;
-    const idSet = new Set(savedIds);
-    if (idSet.size !== allIds.length) return false;
-    for (const id of allIds) {
-      if (!idSet.has(id)) return false;
-    }
-    for (const day of Object.keys(defaultLayout)) {
-      if (!Array.isArray(saved[day])) return false;
-    }
-    return true;
-  }
-
-  function applyLayout(layout, eventMap) {
-    getDayColumns().forEach(col => {
-      const body = col.querySelector('.day-col-body');
-      const ids = layout[col.dataset.day] || [];
-      ids.forEach(id => {
-        const el = eventMap.get(id);
-        if (el) body.appendChild(el);
+      const dayId = col.dataset.day;
+      col.querySelectorAll('.ev[data-id]').forEach(el => {
+        const existing = state.events.find(e => e.id === el.dataset.id);
+        if (existing) events.push({ ...existing, dayId });
       });
     });
+    return events;
   }
 
-  function saveLayout() {
-    const layout = readLayoutFromDOM();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(layout));
-    showToast('Layout saved');
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveItinerary, 400);
   }
 
-  function restoreLayout() {
-    const eventMap = getEventMap();
-    const defaultLayout = readLayoutFromDOM();
+  async function saveItinerary() {
+    if (!canEdit || saving || applyingRemote) return;
+    state.events = eventsFromDOM();
+    saving = true;
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (isValidLayout(saved, eventMap, defaultLayout)) {
-        applyLayout(saved, eventMap);
+      const headers = { 'Content-Type': 'application/json' };
+      if (editKey) headers['X-Edit-Key'] = editKey;
+
+      const res = await fetch(API, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({ version: state.version || 1, events: state.events })
+      });
+
+      if (res.status === 401) {
+        canEdit = false;
+        state.editRequired = true;
+        sessionStorage.removeItem(EDIT_KEY_STORAGE);
+        editKey = null;
+        updateEditMode();
+        render();
+        showToast('Invalid edit key');
+        return;
       }
-    } catch (_) { /* ignore corrupt data */ }
-    return eventMap;
+      if (!res.ok) throw new Error('save failed');
+
+      const result = await res.json();
+      state.updatedAt = result.updatedAt;
+      showToast('Saved for everyone');
+    } catch {
+      showToast('Save failed — try again');
+    } finally {
+      saving = false;
+    }
+  }
+
+  async function pollForUpdates() {
+    if (saving || applyingRemote) return;
+    try {
+      const remote = await loadItinerary();
+      if (remote.updatedAt && remote.updatedAt !== state.updatedAt) {
+        applyingRemote = true;
+        state = remote;
+        render();
+        applyingRemote = false;
+        showToast('Itinerary updated');
+      }
+    } catch { /* ignore poll errors */ }
   }
 
   function initSortable() {
     getDayColumns().forEach(col => {
       const body = col.querySelector('.day-col-body');
-      new Sortable(body, {
+      sortables.push(new Sortable(body, {
         group: 'scotland-calendar',
         animation: 180,
         draggable: '.ev:not([data-locked])',
@@ -1007,33 +955,151 @@
         },
         onEnd() {
           document.querySelectorAll('.day-col-body').forEach(b => b.classList.remove('sortable-drag-active'));
-          saveLayout();
+          scheduleSave();
         }
-      });
+      }));
     });
   }
 
-  document.getElementById('reset-layout').addEventListener('click', () => {
-    if (confirm('Reset the itinerary to the original plan? Your custom layout will be cleared.')) {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
+  function openModal(dayId) {
+    document.getElementById('ev-day-id').value = dayId;
+    document.getElementById('ev-time').value = '';
+    document.getElementById('ev-title').value = '';
+    document.getElementById('ev-note').value = '';
+    document.getElementById('ev-type').value = 'loch';
+    modal.classList.remove('hidden');
+    document.getElementById('ev-title').focus();
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    eventForm.reset();
+  }
+
+  function insertEvent(dayId, data) {
+    const ev = {
+      id: 'ev-' + crypto.randomUUID().slice(0, 8),
+      dayId,
+      time: data.time,
+      title: data.title,
+      note: data.note || '',
+      type: data.type,
+      locked: false
+    };
+
+    const dayIds = DAYS.map(d => d.id);
+    const newEvents = [];
+    let inserted = false;
+
+    for (const day of dayIds) {
+      const dayEvents = state.events.filter(e => e.dayId === day);
+      if (day === dayId) {
+        dayEvents.push(ev);
+        inserted = true;
+      }
+      newEvents.push(...dayEvents);
+    }
+    if (!inserted) newEvents.push(ev);
+
+    state.events = newEvents;
+    render();
+    scheduleSave();
+  }
+
+  function removeEvent(id) {
+    const ev = state.events.find(e => e.id === id);
+    if (!ev || ev.locked) return;
+    if (!confirm('Remove this event?')) return;
+    state.events = state.events.filter(e => e.id !== id);
+    render();
+    scheduleSave();
+  }
+
+  function bindHandlers() {
+    document.querySelectorAll('.day-add-btn').forEach(btn => {
+      btn.onclick = () => openModal(btn.dataset.day);
+    });
+    document.querySelectorAll('.ev-delete').forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        removeEvent(btn.dataset.id);
+      };
+    });
+  }
+
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => setView(btn.dataset.view));
+  });
+
+  document.getElementById('modal-cancel').addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  eventForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!canEdit) return;
+    insertEvent(document.getElementById('ev-day-id').value, {
+      time: document.getElementById('ev-time').value.trim(),
+      title: document.getElementById('ev-title').value.trim(),
+      note: document.getElementById('ev-note').value.trim(),
+      type: document.getElementById('ev-type').value
+    });
+    closeModal();
+  });
+
+  document.getElementById('reset-layout').addEventListener('click', async () => {
+    if (!canEdit) {
+      showToast('Add ?edit=your-key to reset');
+      return;
+    }
+    if (!confirm('Reset the itinerary to the original plan for everyone?')) return;
+    try {
+      const defaults = await loadDefaultItinerary();
+      state.events = defaults.events;
+      await saveItinerary();
+      render();
+      showToast('Reset to default');
+    } catch {
+      showToast('Reset failed');
     }
   });
 
   document.getElementById('export-layout').addEventListener('click', () => {
-    const data = JSON.stringify(readLayoutFromDOM(), null, 2);
+    const data = JSON.stringify({ version: state.version, updatedAt: state.updatedAt, events: state.events }, null, 2);
     const blob = new Blob([data], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'scotland-trip-layout.json';
+    a.download = 'scotland-trip-itinerary.json';
     a.click();
     URL.revokeObjectURL(url);
     showToast('Exported JSON');
   });
 
-  restoreLayout();
-  initSortable();
+  async function init() {
+    initEditKey();
+    const savedView = localStorage.getItem(VIEW_KEY);
+    setView(savedView === 'list' ? 'list' : 'calendar');
+
+    try {
+      state = await loadItinerary();
+    } catch {
+      try {
+        state = await loadDefaultItinerary();
+        state.editRequired = false;
+        showToast('Loaded offline default');
+      } catch {
+        showToast('Could not load itinerary');
+      }
+    }
+
+    updateEditMode();
+    render();
+    setInterval(pollForUpdates, POLL_MS);
+  }
+
+  init();
 })();
 </script>
 
