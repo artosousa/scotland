@@ -911,13 +911,20 @@
         showToast('Invalid edit key');
         return;
       }
-      if (!res.ok) throw new Error('save failed');
+      if (!res.ok) {
+        let detail = 'save failed';
+        try {
+          const err = await res.json();
+          detail = err.message || err.error || detail;
+        } catch { /* ignore */ }
+        throw new Error(detail);
+      }
 
       const result = await res.json();
       state.updatedAt = result.updatedAt;
       showToast('Saved for everyone');
-    } catch {
-      showToast('Save failed — try again');
+    } catch (err) {
+      showToast('Save failed — ' + (err.message || 'try again'));
     } finally {
       saving = false;
     }

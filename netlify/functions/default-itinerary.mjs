@@ -1,0 +1,455 @@
+export default {
+  "version": 1,
+  "events": [
+    {
+      "id": "depart-toronto",
+      "dayId": "jun-21",
+      "time": "10:05 PM",
+      "title": "✈ Depart Toronto YYZ",
+      "note": "Overnight flight to Glasgow",
+      "type": "flight",
+      "locked": true
+    },
+    {
+      "id": "land-gla",
+      "dayId": "jun-22",
+      "time": "Morning",
+      "title": "✈ Land in Glasgow (GLA)",
+      "note": "747 bus → Buchanan Bus Station (~30 min)",
+      "type": "flight",
+      "locked": true
+    },
+    {
+      "id": "train-edinburgh",
+      "dayId": "jun-22",
+      "time": "Midday",
+      "title": "🚂 Train to Edinburgh",
+      "note": "Queen St → Waverley, ~50 min",
+      "type": "loch",
+      "locked": false,
+      "cost": {
+        "label": "~£15–20",
+        "kind": "book"
+      },
+      "link": {
+        "url": "https://www.scotrail.co.uk",
+        "text": "scotrail.co.uk"
+      }
+    },
+    {
+      "id": "royal-mile",
+      "dayId": "jun-22",
+      "time": "Afternoon",
+      "title": "🏰 Royal Mile wander",
+      "note": "Castle Esplanade → Holyrood. Closes & alleys along the way.",
+      "type": "heather",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "victoria-street",
+      "dayId": "jun-22",
+      "time": "Late aft.",
+      "title": "Victoria Street",
+      "note": "Colourful curved street — Diagon Alley vibes",
+      "type": "heather",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "grassmarket-dinner",
+      "dayId": "jun-22",
+      "time": "Evening",
+      "title": "Grassmarket dinner",
+      "note": "Pub dinner, very atmospheric, easy on jet lag",
+      "type": "heather",
+      "locked": false
+    },
+    {
+      "id": "note-edinburgh-save",
+      "dayId": "jun-22",
+      "time": "Note",
+      "title": "",
+      "note": "Save Edinburgh Castle, Arthur's Seat, New Town for the rested return trip (Jun 28). Last train back ~11:45pm.",
+      "type": "neutral",
+      "locked": false
+    },
+    {
+      "id": "necropolis",
+      "dayId": "jun-23",
+      "time": "Morning",
+      "title": "Glasgow Necropolis",
+      "note": "Highly recommended — hillside cemetery, city views",
+      "type": "moss",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "cathedral",
+      "dayId": "jun-23",
+      "time": "Late AM",
+      "title": "Glasgow Cathedral",
+      "note": "Right next to Necropolis",
+      "type": "moss",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "lunch-west-end",
+      "dayId": "jun-23",
+      "time": "Lunch",
+      "title": "☕ Paper Cup or Naked Soup",
+      "note": "West End",
+      "type": "loch",
+      "locked": false
+    },
+    {
+      "id": "kelvingrove",
+      "dayId": "jun-23",
+      "time": "Afternoon",
+      "title": "Kelvingrove Art Gallery",
+      "note": "World-class, free, stunning building",
+      "type": "moss",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "uni-botanic",
+      "dayId": "jun-23",
+      "time": "Late aft.",
+      "title": "University of Glasgow & Botanic Gardens",
+      "note": "Gothic campus + riverside park",
+      "type": "moss",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "dinner-focaccia",
+      "dayId": "jun-23",
+      "time": "Evening",
+      "title": "🍽 Focaccia",
+      "note": "West End dinner",
+      "type": "loch",
+      "locked": false
+    },
+    {
+      "id": "train-oban",
+      "dayId": "jun-24",
+      "time": "7:30 AM",
+      "title": "🚂 Train to Oban",
+      "note": "~2.5 hrs, scenic route",
+      "type": "puffin",
+      "locked": true,
+      "cost": {
+        "label": "~£25–35",
+        "kind": "book"
+      }
+    },
+    {
+      "id": "ferry-ulva",
+      "dayId": "jun-24",
+      "time": "Midday",
+      "title": "⛴ Ferry + minibus to Ulva Ferry",
+      "note": "Coordinated by Turus Mara",
+      "type": "puffin",
+      "locked": true
+    },
+    {
+      "id": "turus-mara",
+      "dayId": "jun-24",
+      "time": "All day",
+      "title": "🐦 Turus Mara boat tour",
+      "note": "2+ hrs on Lunga with puffins. Plus Fingal's Cave on Staffa.",
+      "type": "puffin",
+      "locked": true,
+      "cost": {
+        "label": "~£65–75",
+        "kind": "book"
+      },
+      "link": {
+        "url": "https://www.turusmara.com",
+        "text": "turusmara.com"
+      }
+    },
+    {
+      "id": "note-puffin-book",
+      "dayId": "jun-24",
+      "time": "Note",
+      "title": "",
+      "note": "⚠ Book this tour ASAP — limited spots, sells out. Weather dependent.",
+      "type": "neutral",
+      "locked": false
+    },
+    {
+      "id": "train-back-glasgow",
+      "dayId": "jun-24",
+      "time": "~7 PM",
+      "title": "🚂 Train back to Glasgow",
+      "note": "",
+      "type": "puffin",
+      "locked": true
+    },
+    {
+      "id": "rabbies-departs",
+      "dayId": "jun-25",
+      "time": "8:30 AM",
+      "title": "🚌 Rabbie's tour departs",
+      "note": "Buchanan Bus Station, small minibus",
+      "type": "amber",
+      "locked": true,
+      "cost": {
+        "label": "~£75–85",
+        "kind": "book"
+      },
+      "link": {
+        "url": "https://www.rabbies.com/en-us/tour/loch-ness-glencoe-the-highlands-day-tour-from-glasgow",
+        "text": "rabbies.com"
+      }
+    },
+    {
+      "id": "loch-lomond",
+      "dayId": "jun-25",
+      "time": "Morning",
+      "title": "Loch Lomond & Luss",
+      "note": "First scenic stop",
+      "type": "amber",
+      "locked": false
+    },
+    {
+      "id": "glencoe",
+      "dayId": "jun-25",
+      "time": "Midday",
+      "title": "Glencoe & Rannoch Moor",
+      "note": "Dramatic valley, Skyfall filming spot",
+      "type": "amber",
+      "locked": false
+    },
+    {
+      "id": "fort-william-lunch",
+      "dayId": "jun-25",
+      "time": "Lunch",
+      "title": "Fort William",
+      "note": "At the base of Ben Nevis",
+      "type": "amber",
+      "locked": false
+    },
+    {
+      "id": "loch-ness",
+      "dayId": "jun-25",
+      "time": "Afternoon",
+      "title": "Loch Ness & Pitlochry",
+      "note": "Optional boat cruise (~£15 extra)",
+      "type": "amber",
+      "locked": false
+    },
+    {
+      "id": "note-highland-cow",
+      "dayId": "jun-25",
+      "time": "Note",
+      "title": "",
+      "note": "Ask your guide about a Highland cow stop! Returns ~8:30 PM",
+      "type": "neutral",
+      "locked": false
+    },
+    {
+      "id": "pollok-park",
+      "dayId": "jun-26",
+      "time": "Morning",
+      "title": "Pollok Country Park",
+      "note": "Highland cows + Pollok House",
+      "type": "heather",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "burrell",
+      "dayId": "jun-26",
+      "time": "Late AM",
+      "title": "Burrell Collection",
+      "note": "World-class art museum, inside the park",
+      "type": "heather",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "lunch-southside",
+      "dayId": "jun-26",
+      "time": "Lunch",
+      "title": "🍕 Sears Pizza or Zennor",
+      "note": "Southside",
+      "type": "loch",
+      "locked": false
+    },
+    {
+      "id": "god-shot",
+      "dayId": "jun-26",
+      "time": "Afternoon",
+      "title": "☕ God Shot",
+      "note": "Relax before the show — keep it light",
+      "type": "loch",
+      "locked": false
+    },
+    {
+      "id": "pre-show-dinner",
+      "dayId": "jun-26",
+      "time": "Pre-show",
+      "title": "🍽 Dishoom or Margo",
+      "note": "City centre, near venue",
+      "type": "loch",
+      "locked": false
+    },
+    {
+      "id": "concert",
+      "dayId": "jun-26",
+      "time": "Tonight",
+      "title": "🎶 CONCERT",
+      "note": "",
+      "type": "concert",
+      "locked": true,
+      "concert": true
+    },
+    {
+      "id": "riverside",
+      "dayId": "jun-27",
+      "time": "Morning",
+      "title": "Riverside Museum",
+      "note": "Zaha Hadid building, transport museum",
+      "type": "loch",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "merchant-city",
+      "dayId": "jun-27",
+      "time": "Midday",
+      "title": "Merchant City wander",
+      "note": "Shops, street art, cafes",
+      "type": "loch",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "buchanan-street",
+      "dayId": "jun-27",
+      "time": "Afternoon",
+      "title": "Buchanan Street & Princes Square",
+      "note": "Shopping, ornate Victorian arcade",
+      "type": "loch",
+      "locked": false
+    },
+    {
+      "id": "dinner-margo",
+      "dayId": "jun-27",
+      "time": "Evening",
+      "title": "🍽 Margo or Bar Vini",
+      "note": "Sit-down dinner",
+      "type": "loch",
+      "locked": false
+    },
+    {
+      "id": "train-edinburgh-2",
+      "dayId": "jun-28",
+      "time": "Morning",
+      "title": "🚂 Train to Edinburgh (optional)",
+      "note": "Rested this time — go for the big sights",
+      "type": "heather",
+      "locked": false
+    },
+    {
+      "id": "edinburgh-castle",
+      "dayId": "jun-28",
+      "time": "Midday",
+      "title": "🏰 Edinburgh Castle",
+      "note": "Allow 2+ hrs. Stone of Destiny now in Perth.",
+      "type": "heather",
+      "locked": false,
+      "cost": {
+        "label": "£19.50 online",
+        "kind": "book"
+      },
+      "link": {
+        "url": "https://www.edinburghcastle.scot/tickets",
+        "text": "edinburghcastle.scot"
+      }
+    },
+    {
+      "id": "arthurs-seat",
+      "dayId": "jun-28",
+      "time": "Afternoon",
+      "title": "Arthur's Seat hike",
+      "note": "~1 hr, panoramic views",
+      "type": "heather",
+      "locked": false,
+      "cost": {
+        "label": "Free",
+        "kind": "free"
+      }
+    },
+    {
+      "id": "alt-loch-lomond",
+      "dayId": "jun-28",
+      "time": "Alt. plan",
+      "title": "",
+      "note": "If skipping Edinburgh: slow Glasgow morning + train to Balloch/Loch Lomond (~45 min, £10)",
+      "type": "neutral",
+      "locked": false
+    },
+    {
+      "id": "final-dinner",
+      "dayId": "jun-28",
+      "time": "Evening",
+      "title": "Final dinner & pack",
+      "note": "Early night — flight tomorrow!",
+      "type": "loch",
+      "locked": false
+    },
+    {
+      "id": "leave-airport",
+      "dayId": "jun-29",
+      "time": "8:30 AM",
+      "title": "Leave for airport",
+      "note": "~45 min to GLA",
+      "type": "flight",
+      "locked": true
+    },
+    {
+      "id": "depart-gla",
+      "dayId": "jun-29",
+      "time": "11:00 AM",
+      "title": "✈ Depart Glasgow GLA",
+      "note": "→ Toronto YYZ",
+      "type": "flight",
+      "locked": true
+    }
+  ]
+};
